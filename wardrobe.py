@@ -1,26 +1,118 @@
+import os
 import tkinter as tk
 from PIL import Image, ImageTk
 from playsound import playsound
 
+'''
+This is a program that chooses my outfits for me
+It has all the clothes in my wardrobe:
+- Tops
+- Bottoms
+- Shoes
+- Dresses
+- Jackets
+
+- Randomly choose an outfit for me based on approved combinations
+    * Choose based on weather 
+    * Choose based on occasion
+    * Jacket optional
+- Go through my tops and bottoms like from clueless so i can pick an outfit
+    * Show items based on weather
+'''
+"""
+What it needs - Brainstorming
+-------------------------------
+Frame with the title on the top 
+a specific window size
+a place to select pictures of my tops, bottoms, shoes dresses and jackets when I first set up the app (load my wardrobe)
+    * Must save these pictures after I close the app
+    * Can upload new pictures
+        > upload all and only add the new ones - check the picture doesn't already exist before uploading
+    * Should be able to create a new wardrobe if other people want to use it (feature can be added later)
+a frame with my top
+a frame with the bottoms
+a frame with the shoes
+
+if its a dress then take up the space of the top and the bottoms combined
+a button for previous (for each clothing item separately) - beside each item's frame
+a button for next (for each clothing item separately) - beside each item's frame
+
+A button to generate "New outfit"
+    * Will ask for the weather (drop box)
+    * Will ask for the occasion (drop box)
+ 
+ So each clothing item needs a weather setting and an occasion setting (can have multiple categories e.g casual and formal)
+ this will be edited in the the window itself
+ When you load a clothing item in it makes you say if its a top or bottom etc, what weather its for and what occasion
+ 
+
+"""
+
 WINDOW_TITLE = "My Wardrobe"
-WINDOW_HEIGHT = 220
-WINDOW_WIDTH = 500
+WINDOW_HEIGHT = 600
+WINDOW_WIDTH = 700
 
+
+# Wardrobe class that contains the window for the clothes to be displayed
 class WardrobeApp:
-    def __init__(self, window):
-        self.window = window
+    def __init__(self, root):
+        # make the wardrobe window/GUI
+        self.root = root
 
-        # create background
-        self.create_background()
+        # Create the details for the window
+        self.CreateFrame()
+        self.CreateButtons()
+        self.CreateLabels()
 
-    def create_background(self):
+    def CreateFrame(self):
+        # add title to window
+        self.root.title(WINDOW_TITLE)
+        # change the size of the window
+        # self.root.geometry('{0}x{1}'.format(WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.canvas = tk.Canvas(self.root, height=WINDOW_HEIGHT, width=WINDOW_WIDTH)
+        self.canvas.pack()
 
-        # add title to window and change the size
-        self.window.title(WINDOW_TITLE)
-        self.window.geometry('{0}x{1}'.format(WINDOW_WIDTH, WINDOW_HEIGHT))
+        #create a frame for the tops
+        self.frame_top = tk.Frame(self.root, bg='#80c1ff')
+        self.frame_top.place(relx=0.35, rely=0.1, relwidth=0.3, relheight=0.35)
 
-window = tk.Tk()
-app = WardrobeApp(window)
-window.mainloop()
+        # create a frame for the bottoms
+        self.frame_bottom = tk.Frame(self.root, bg='#80c1ff')
+        self.frame_bottom.place(relx=0.35, rely=0.5, relwidth=0.3, relheight=0.35)
+
+    def CreateButtons(self):
+        # create a previous and next buttons for each item and add them to the root
+
+        # buttoms for tops
+        self.button_prev_top = tk.Button(self.root, text = "Prev", bg = 'pink')
+        self.button_prev_top.place(relx=0.25, rely=0.25, relwidth=0.08, relheight=0.05)
+
+        self.button_next_top = tk.Button(self.root, text="Next", bg='pink')
+        self.button_next_top.place(relx=0.67, rely=0.25, relwidth=0.08, relheight=0.05)
+
+        # buttons for bottoms
+        self.button_prev_bottom = tk.Button(self.root, text = "Prev", bg = 'purple')
+        self.button_prev_bottom.place(relx=0.25, rely=0.65, relwidth=0.08, relheight=0.05)
+
+        self.button_next_bottom = tk.Button(self.root, text="Next", bg='purple')
+        self.button_next_bottom.place(relx=0.67, rely=0.65, relwidth=0.08, relheight=0.05)
+
+        # Random outfit button
+        self.button_random_outfit = tk.Button(self.root, text="Random Outfit", bg='light green')
+        self.button_random_outfit.place(relx=0.05, rely=0.05)
 
 
+    def CreateLabels(self):
+        # Create label for the tops area
+        self.label_top = tk.Label(self.frame_top, text = "Tops", bg = 'white')
+        self.label_top.place(relx=0.3, rely=0.02, relwidth = 0.4, relheight = 0.1)
+
+        # Create label for the tops area
+        self.label_bottom = tk.Label(self.frame_bottom, text="Bottoms", bg='white')
+        self.label_bottom.place(relx=0.3, rely=0.02, relwidth=0.4, relheight=0.1)
+
+
+
+root = tk.Tk()
+app = WardrobeApp(root)
+root.mainloop()
