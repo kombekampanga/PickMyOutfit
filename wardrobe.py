@@ -112,12 +112,12 @@ class WardrobeApp:
         self.button_next_top.place(relx=0.67, rely=0.25, relwidth=0.08, relheight=0.05)
 
         # buttons for bottoms
-        self.button_prev_bottom = tk.Button(self.root, text="Prev", bg="purple", command=self.bottom_prev_photo)
+        self.button_prev_bottom = tk.Button(self.root, text="Prev", bg="#BDA0CB", command=self.bottom_prev_photo)
         # Previous button should start off being disabled since the very first image is shown at the start
         self.button_prev_bottom.config(state='disabled')
         self.button_prev_bottom.place(relx=0.25, rely=0.65, relwidth=0.08, relheight=0.05)
 
-        self.button_next_bottom = tk.Button(self.root, text="Next", bg='purple', command=self.bottom_next_photo)
+        self.button_next_bottom = tk.Button(self.root, text="Next", bg='#BDA0CB', command=self.bottom_next_photo)
         self.button_next_bottom.place(relx=0.67, rely=0.65, relwidth=0.08, relheight=0.05)
 
         # Random outfit button
