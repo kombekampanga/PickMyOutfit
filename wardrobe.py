@@ -52,6 +52,14 @@ WINDOW_TITLE = "My Wardrobe"
 WINDOW_HEIGHT = 600
 WINDOW_WIDTH = 700
 
+#list of image names
+image_names = ["top1.jpg", "bottom1.jpg"]
+# frame (that displays the top and bottom takes up 30% of the page in the centre
+# with 35% remaining either side of the frame
+FRAME_WIDTH = WINDOW_WIDTH * 0.3
+FRAME_HEIGHT = WINDOW_HEIGHT * 0.3
+PERCENTAGE_EITHER_SIDE_OF_FRAME = 0.35
+
 
 # Wardrobe class that contains the window for the clothes to be displayed
 class WardrobeApp:
@@ -62,7 +70,10 @@ class WardrobeApp:
         # Create the details for the window
         self.CreateFrame()
         self.CreateButtons()
-        self.CreateLabels()
+       # self.CreateLabels()
+        # Upload the top and the bottom into the frame
+        for image_name in image_names:
+            self.CreatePhoto(image_name)
 
     def CreateFrame(self):
         # add title to window
@@ -72,26 +83,26 @@ class WardrobeApp:
         self.canvas = tk.Canvas(self.root, height=WINDOW_HEIGHT, width=WINDOW_WIDTH)
         self.canvas.pack()
 
-        #create a frame for the tops
+        # create a frame for the tops
         self.frame_top = tk.Frame(self.root, bg='#80c1ff')
-        self.frame_top.place(relx=0.35, rely=0.1, relwidth=0.3, relheight=0.35)
+        self.frame_top.place(relx=PERCENTAGE_EITHER_SIDE_OF_FRAME, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
 
         # create a frame for the bottoms
         self.frame_bottom = tk.Frame(self.root, bg='#80c1ff')
-        self.frame_bottom.place(relx=0.35, rely=0.5, relwidth=0.3, relheight=0.35)
+        self.frame_bottom.place(relx=PERCENTAGE_EITHER_SIDE_OF_FRAME, rely=0.5, width=FRAME_WIDTH, height=FRAME_HEIGHT)
 
     def CreateButtons(self):
         # create a previous and next buttons for each item and add them to the root
 
         # buttoms for tops
-        self.button_prev_top = tk.Button(self.root, text = "Prev", bg = 'pink')
+        self.button_prev_top = tk.Button(self.root, text="Prev", bg='pink')
         self.button_prev_top.place(relx=0.25, rely=0.25, relwidth=0.08, relheight=0.05)
 
         self.button_next_top = tk.Button(self.root, text="Next", bg='pink')
         self.button_next_top.place(relx=0.67, rely=0.25, relwidth=0.08, relheight=0.05)
 
         # buttons for bottoms
-        self.button_prev_bottom = tk.Button(self.root, text = "Prev", bg = 'purple')
+        self.button_prev_bottom = tk.Button(self.root, text="Prev", bg='purple')
         self.button_prev_bottom.place(relx=0.25, rely=0.65, relwidth=0.08, relheight=0.05)
 
         self.button_next_bottom = tk.Button(self.root, text="Next", bg='purple')
@@ -101,16 +112,41 @@ class WardrobeApp:
         self.button_random_outfit = tk.Button(self.root, text="Random Outfit", bg='light green')
         self.button_random_outfit.place(relx=0.05, rely=0.05)
 
-
     def CreateLabels(self):
         # Create label for the tops area
-        self.label_top = tk.Label(self.frame_top, text = "Tops", bg = 'white')
-        self.label_top.place(relx=0.3, rely=0.02, relwidth = 0.4, relheight = 0.1)
+        self.label_top = tk.Label(self.frame_top, text="Tops", bg='white')
+        self.label_top.place(relx=0.3, rely=0.02, relwidth=0.4, height=0.1)
 
         # Create label for the tops area
         self.label_bottom = tk.Label(self.frame_bottom, text="Bottoms", bg='white')
         self.label_bottom.place(relx=0.3, rely=0.02, relwidth=0.4, relheight=0.1)
 
+    def CreatePhoto(self, image_name):
+        # load the image in
+        load = Image.open(image_name)
+        # Resize the image so it fits in the frame
+        image_resized = load.resize((int(FRAME_WIDTH),int(FRAME_HEIGHT)), Image.ANTIALIAS)
+        # Create the image so tkinter can read it
+        photo = ImageTk.PhotoImage(image_resized)
+
+        # check if the image is a top or bottom and put it in the appropriate frame
+        # Place the image into a label so it can be displayed (tkinter rule)
+        if "top" in image_name:
+            image_label = tk.Label(self.frame_top, image=photo)
+        elif "bottom" in image_name:
+            image_label = tk.Label(self.frame_bottom, image = photo)
+
+        # Save a reference so that tkinter doesnt doesn't send it to the garbage collector
+        # when the function closes (so the widget can still hold onto the image
+        image_label.image = photo
+
+        # Place the image into the frame
+        image_label.place(x=0, y=0)
+
+# def CreateDrobBoxes(self):
+
+# Dropbox for the Weather - Hot, Warm, Cold and Windy, Cold and Rainy
+# Dropbox for occasion - Work, House Party, Town, 21st ish, Everyday/Errands, Uni, Family/Church
 
 
 root = tk.Tk()
