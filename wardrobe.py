@@ -52,9 +52,9 @@ WINDOW_TITLE = "My Wardrobe"
 WINDOW_HEIGHT = 600
 WINDOW_WIDTH = 700
 
-#list of image names
+# list of image names
 top_image_names = ["top1.jpg", "top2.jpg", "top3.jpg", "top4.jpg"]
-bottom_image_names = ["bottom1.jpg","bottom2.jpg", "bottom3.jpg", "bottom4.jpg"]
+bottom_image_names = ["bottom1.jpg", "bottom2.jpg", "bottom3.jpg", "bottom4.jpg"]
 # frame (that displays the top and bottom takes up 30% of the page in the centre
 # with 35% remaining either side of the frame
 FRAME_WIDTH = WINDOW_WIDTH * 0.3
@@ -63,8 +63,8 @@ PERCENTAGE_EITHER_SIDE_OF_FRAME = 0.35
 
 # Index numbers to keep track of which top/bottom item we are looking at
 # So when we click next and previous we can move through the items
-top_index = 0
 bottom_index = 0
+top_index = 0
 
 
 # Wardrobe class that contains the window for the clothes to be displayed
@@ -81,9 +81,6 @@ class WardrobeApp:
         # Upload the initial top and the bottom picture into the frame (indices initially = 0)
         self.create_photo(top_image_names[top_index])
         self.create_photo(bottom_image_names[bottom_index])
-
-        #
-
 
     def create_frame(self):
         # add title to window
@@ -105,17 +102,21 @@ class WardrobeApp:
         # create a previous and next buttons for each item and add them to the root
 
         # buttons for tops
-        self.button_prev_top = tk.Button(self.root, text="Prev", bg='pink')
+        self.button_prev_top = tk.Button(self.root, text="Prev", bg='pink', command=self.top_prev_photo)
+        # Previous button should start off being disabled since the very first image is shown at the start
+        self.button_prev_top.config(state='disabled')
         self.button_prev_top.place(relx=0.25, rely=0.25, relwidth=0.08, relheight=0.05)
 
-        self.button_next_top = tk.Button(self.root, text="Next", bg='pink')
+        self.button_next_top = tk.Button(self.root, text="Next", bg='pink', command=self.top_next_photo)
         self.button_next_top.place(relx=0.67, rely=0.25, relwidth=0.08, relheight=0.05)
 
         # buttons for bottoms
-        self.button_prev_bottom = tk.Button(self.root, text="Prev", bg='purple')
+        self.button_prev_bottom = tk.Button(self.root, text="Prev", bg="purple", command=self.bottom_prev_photo)
+        # Previous button should start off being disabled since the very first image is shown at the start
+        self.button_prev_bottom.config(state='disabled')
         self.button_prev_bottom.place(relx=0.25, rely=0.65, relwidth=0.08, relheight=0.05)
 
-        self.button_next_bottom = tk.Button(self.root, text="Next", bg='purple')
+        self.button_next_bottom = tk.Button(self.root, text="Next", bg='purple', command=self.bottom_next_photo)
         self.button_next_bottom.place(relx=0.67, rely=0.65, relwidth=0.08, relheight=0.05)
 
         # Random outfit button
@@ -135,7 +136,7 @@ class WardrobeApp:
         # load the image in
         load = Image.open(image_name)
         # Resize the image so it fits in the frame
-        image_resized = load.resize((int(FRAME_WIDTH),int(FRAME_HEIGHT)), Image.ANTIALIAS)
+        image_resized = load.resize((int(FRAME_WIDTH), int(FRAME_HEIGHT)), Image.ANTIALIAS)
         # Create the image so tkinter can read it
         photo = ImageTk.PhotoImage(image_resized)
 
@@ -144,7 +145,7 @@ class WardrobeApp:
         if "top" in image_name:
             image_label = tk.Label(self.frame_top, image=photo)
         elif "bottom" in image_name:
-            image_label = tk.Label(self.frame_bottom, image = photo)
+            image_label = tk.Label(self.frame_bottom, image=photo)
 
         # Save a reference so that tkinter doesnt doesn't send it to the garbage collector
         # when the function closes (so the widget can still hold onto the image
@@ -153,8 +154,98 @@ class WardrobeApp:
         # Place the image into the frame
         image_label.place(x=0, y=0)
 
+    # function to go to the previous top
+    def top_prev_photo(self):
+        self.prev_photo('top')
 
-    def next_photo(self):
+    # function to go to the next top
+    def top_next_photo(self):
+        self.next_photo('top')
+
+    # function to go to the previous bottoms
+    def bottom_prev_photo(self):
+        self.prev_photo('bottom')
+
+    # function to go to the next bottoms
+    def bottom_next_photo(self):
+        self.next_photo('bottom')
+
+    def next_photo(self, item):
+        # declare top_index and bottom_index as global variables so we can update them within the function
+        global top_index
+        global bottom_index
+
+        # check if you're changing the top or bottom photo
+        # and get the appropriate index and image list
+        if item == 'top':
+            index = top_index
+            image_names = top_image_names
+        elif item == 'bottom':
+            index = bottom_index
+            image_names = bottom_image_names
+
+        # Make sure you aren't at the last photo
+        if index < len(image_names):
+            # Move on to the next image (increase index)
+            index += 1
+            # Make sure to increase the global variable for the index as well
+            if item == 'top':
+                top_index += 1
+            elif item == 'bottom':
+                bottom_index += 1
+            # Put the next image in the frame
+            self.create_photo(image_names[index])
+            # If this is now the last image then disable the next button
+            if index == len(image_names) - 1:
+                if item == 'bottom':
+                    self.button_next_bottom.config(state='disabled')
+                elif item == 'top':
+                    self.button_next_top.config(state='disabled')
+
+            # If this is now the second image then stop disabling the previous button
+            if index == 1:
+                if item == 'bottom':
+                    self.button_prev_bottom.config(state='normal')
+                elif item == 'top':
+                    self.button_prev_top.config(state='normal')
+
+    def prev_photo(self, item):
+        # declare top_index and bottom_index as global variables so we can update them within the function
+        global top_index
+        global bottom_index
+        # check if you're changing the top or bottom photo
+        # and get the appropriate index and image list
+        if item == 'top':
+            index = top_index
+            image_names = top_image_names
+        elif item == 'bottom':
+            index = bottom_index
+            image_names = bottom_image_names
+
+        # Make sure you aren't at the first photo
+        if index != 0:
+            # Go back to the previous image (decrease index)
+            index -= 1
+            # Make sure to decrease the global variable for the index as well
+            if item == 'top':
+                top_index -= 1
+            elif item == 'bottom':
+                bottom_index -= 1
+            # Put the previous image in the frame
+            self.create_photo(image_names[index])
+            # If this is now the first image then disable the previous button
+            if index == 0:
+                if item == 'bottom':
+                    self.button_prev_bottom.config(state='disabled')
+                elif item == 'top':
+                    self.button_prev_top.config(state='disabled')
+
+            # If this no longer last image then stop disabling the next button
+            if index == len(image_names) - 2:
+                if item == 'bottom':
+                    self.button_next_bottom.config(state='normal')
+                elif item == 'top':
+                    self.button_next_top.config(state='normal')
 
 
 # def CreateDropBoxes(self):
