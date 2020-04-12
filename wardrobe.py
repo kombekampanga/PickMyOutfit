@@ -1,6 +1,7 @@
 import os
 import tkinter as tk
 from PIL import Image, ImageTk
+import random
 from playsound import playsound
 
 '''
@@ -120,7 +121,8 @@ class WardrobeApp:
         self.button_next_bottom.place(relx=0.67, rely=0.65, relwidth=0.08, relheight=0.05)
 
         # Random outfit button
-        self.button_random_outfit = tk.Button(self.root, text="Random Outfit", bg='light green')
+        self.button_random_outfit = tk.Button(self.root, text="Random Outfit", bg='light green',
+                                              command=self.random_outfit)
         self.button_random_outfit.place(relx=0.05, rely=0.05)
 
     def create_labels(self):
@@ -169,6 +171,41 @@ class WardrobeApp:
     # function to go to the next bottoms
     def bottom_next_photo(self):
         self.next_photo('bottom')
+
+    # function to get random outfit
+    def random_outfit(self):
+        # declare top_index and bottom_index as global variables so we can update them within the function
+        global top_index
+        global bottom_index
+
+        # get a random index for the top and bottom
+        top_index = random.randint(0, len(top_image_names) - 1)
+        bottom_index = random.randint(0, len(bottom_image_names) - 1)
+
+        # Place the random top and bottom images on the screen
+        self.create_photo(top_image_names[top_index])
+        self.create_photo(bottom_image_names[bottom_index])
+
+        # If this is the first image then disable the prev button, otherwise make sure its normal
+        if top_index == 0:
+            self.button_prev_top.config(state='disabled')
+        else:
+            self.button_prev_top.config(state='normal')
+        if bottom_index == 0:
+            self.button_prev_bottom.config(state='disabled')
+        else:
+            self.button_prev_bottom.config(state='normal')
+
+        # If this is the last image then disable the next button, otherwise make sure its normal
+        if top_index == len(top_image_names) - 1:
+            self.button_next_top.config(state="disabled")
+        else:
+            self.button_next_top.config(state="normal")
+
+        if bottom_index == len(bottom_image_names) - 1:
+            self.button_next_bottom.config(state='disabled')
+        else:
+            self.button_next_bottom.config(state="normal")
 
     def next_photo(self, item):
         # declare top_index and bottom_index as global variables so we can update them within the function
