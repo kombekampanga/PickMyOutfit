@@ -54,10 +54,65 @@ WINDOW_HEIGHT = 600
 WINDOW_WIDTH = 700
 
 # list of image names
-top_image_names = ["top1.jpg", "top2.jpg", "top3.jpg", "top4.jpg"]
-bottom_image_names = ["bottom1.jpg", "bottom2.jpg", "bottom3.jpg", "bottom4.jpg"]
-cold_windy_tops = ["top3"]
-cold_windy_bottoms = ["bottom1.jpg", "bottom3.jpg"]
+'''
+maybe in the future instead of loading all the lists here, we can have a function that gets the required images from
+the right folder depending on which selection is made
+Right now we are just making lists to see if this will work
+'''
+
+all_tops = ["top1.jpg", "top2.jpg", "top3.jpg", "top4.jpg"]
+all_bottoms = ["bottom1.jpg", "bottom2.jpg", "bottom3.jpg", "bottom4.jpg"]
+
+# Master lists - these will be updated in the program (when weather and/or occasions are selected)
+# and used in the create_photo function to display the appropriate pictures
+# To begin with these will show all the tops and bottoms because no selection has been made
+master_tops_list = all_tops
+master_bottoms_list = all_bottoms
+
+# Weather and occasion lists - these will be updated in the filter function (when weather and/or
+# occasions are selected) and then used to update the master lists accordingly
+weather_tops_list = []
+weather_bottoms_list = []
+occasion_tops_list = []
+occasion_bottoms_list = []
+
+# Weather specified clothing
+hot_tops = []
+hot_bottoms = []
+
+warm_tops = []
+warm_bottoms = []
+
+windy_tops = ["top3"]
+windy_bottoms = ["bottom1.jpg", "bottom3.jpg"]
+
+rainy_tops = []
+rainy_bottoms = []
+
+
+# Occasion specified clothing
+work_tops = []
+work_bottoms = []
+
+house_party_tops = []
+house_party_bottoms = []
+
+town_tops = []
+town_bottoms = []
+
+twenty_first_tops = []
+twenty_first_bottoms = []
+
+everyday_tops = []
+everyday_bottoms = []
+
+uni_tops = []
+uni_bottoms = []
+
+family_tops = []
+family_bottoms = []
+
+
 # frame (that displays the top and bottom takes up 30% of the page in the centre
 # with 35% remaining either side of the frame
 FRAME_WIDTH = WINDOW_WIDTH * 0.3
@@ -83,8 +138,8 @@ class WardrobeApp:
         self.create_menu_buttons()
 
         # Upload the initial top and the bottom picture into the frame (indices initially = 0)
-        self.create_photo(top_image_names[top_index])
-        self.create_photo(bottom_image_names[bottom_index])
+        self.create_photo(master_tops_list[top_index])
+        self.create_photo(master_tops_list[bottom_index])
 
     def create_frame(self):
         # add title to window
@@ -215,7 +270,7 @@ class WardrobeApp:
 
     # function to get cold and windy clothes
     def cold_windy_photos(self):
-        self.create_photo(top_image_names[2])
+        self.create_photo(master_tops_list[2])
 
     # function to get random outfit
     def random_outfit(self):
@@ -224,12 +279,12 @@ class WardrobeApp:
         global bottom_index
 
         # get a random index for the top and bottom
-        top_index = random.randint(0, len(top_image_names) - 1)
-        bottom_index = random.randint(0, len(bottom_image_names) - 1)
+        top_index = random.randint(0, len(master_tops_list) - 1)
+        bottom_index = random.randint(0, len(master_bottoms_list) - 1)
 
         # Place the random top and bottom images on the screen
-        self.create_photo(top_image_names[top_index])
-        self.create_photo(bottom_image_names[bottom_index])
+        self.create_photo(master_tops_list[top_index])
+        self.create_photo(master_bottoms_list[bottom_index])
 
         # If this is the first image then disable the prev button, otherwise make sure its normal
         if top_index == 0:
@@ -242,12 +297,12 @@ class WardrobeApp:
             self.button_prev_bottom.config(state='normal')
 
         # If this is the last image then disable the next button, otherwise make sure its normal
-        if top_index == len(top_image_names) - 1:
+        if top_index == len(master_tops_list) - 1:
             self.button_next_top.config(state="disabled")
         else:
             self.button_next_top.config(state="normal")
 
-        if bottom_index == len(bottom_image_names) - 1:
+        if bottom_index == len(master_bottoms_list) - 1:
             self.button_next_bottom.config(state='disabled')
         else:
             self.button_next_bottom.config(state="normal")
@@ -261,10 +316,10 @@ class WardrobeApp:
         # and get the appropriate index and image list
         if item == 'top':
             index = top_index
-            image_names = top_image_names
+            image_names = master_tops_list
         elif item == 'bottom':
             index = bottom_index
-            image_names = bottom_image_names
+            image_names = master_bottoms_list
 
         # Make sure you aren't at the last photo
         if index < len(image_names):
@@ -299,10 +354,10 @@ class WardrobeApp:
         # and get the appropriate index and image list
         if item == 'top':
             index = top_index
-            image_names = top_image_names
+            image_names = master_tops_list
         elif item == 'bottom':
             index = bottom_index
-            image_names = bottom_image_names
+            image_names = master_bottoms_list
 
         # Make sure you aren't at the first photo
         if index != 0:
