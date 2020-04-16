@@ -241,7 +241,7 @@ class WardrobeApp:
         self.root = root
 
         # Create the file path for the images
-        self.file_path = file_path
+        self.file_path = ''
 
         # Create list of weather categories
         self.weather_categories = ['Show All', 'Hot', 'Warm', 'Cold and Windy', 'Cold and Rainy']
@@ -319,8 +319,9 @@ class WardrobeApp:
         self.load_wardrobe()
 
         # Upload the initial top and the bottom picture into the frame (indices initially = 0)
-        self.create_photo(self.master_tops_list[self.top_index])
-        self.create_photo(self.master_bottoms_list[self.bottom_index])
+        if self.file_path != '':
+            self.create_photo(self.master_tops_list[self.top_index])
+            self.create_photo(self.master_bottoms_list[self.bottom_index])
 
     def create_frame(self):
         # add title to window
@@ -433,10 +434,25 @@ class WardrobeApp:
     # function to load the intial wardrobe into the program (change the file path)
     def load_wardrobe(self):
         # Open file explore to get the user to choose the folder that contains the clothing
-        self.file_path = filedialog.askdirectory()
+        new_file_path = filedialog.askdirectory()
 
-        # Get all the clothes from the folder
-        self.all_clothes = os.listdir(self.file_path)
+        # Get all the clothes from the folder - check if a file path was chosen
+        try:
+            self.all_clothes = os.listdir(new_file_path)
+        # if no path was chosen
+        except FileNotFoundError:
+            # keep asking until a path is chosen
+            error = FileNotFoundError
+            # using this while loop because if the program is first starting then we want it to asking until a path
+            # is chosen. But if they are loading a new wardrobe and they change their mind, they can still use the old
+            # file path saved in self.file_path
+            while new_file_path == '' and self.file_path == '':
+                new_file_path = filedialog.askdirectory()
+                if new_file_path != '':
+                    self.file_path = new_file_path
+
+            self.all_clothes = os.listdir(self.file_path)
+
 
         # Get all the tops from the tops folder
         # Empty the tops list first
