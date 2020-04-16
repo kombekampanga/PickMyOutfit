@@ -71,15 +71,23 @@ Right now we are just making lists to see if this will work
 '''
 
 # Get the file path where the images are saved:
-tops_file_path = 'C:\\Users\kombe\Desktop\Wardrobe\PickMyOutfit\All Tops'
-bottoms_file_path = 'C:\\Users\kombe\Desktop\Wardrobe\PickMyOutfit\All Bottoms'
+file_path = 'C:\\Users\kombe\Desktop\Wardrobe\PickMyOutfit\All Clothes'
+#bottoms_file_path = 'C:\\Users\kombe\Desktop\Wardrobe\PickMyOutfit\All Bottoms'
+
+# Get all the clothes from the folder
+all_clothes = os.listdir(file_path)
 
 # Get all the tops from the tops folder
-all_tops = os.listdir(tops_file_path)
+all_tops = []
+for item in all_clothes:
+    if 'top' in item:
+        all_tops.append(item)
 
 # Get all the bottoms from the bottoms folder
-all_bottoms = os.listdir(bottoms_file_path)
-
+all_bottoms = []
+for item in all_clothes:
+    if 'bottom' in item:
+        all_bottoms.append(item)
 
 # Master lists - these will be updated in the program (when weather and/or occasions are selected)
 # and used in the create_photo function to display the appropriate pictures
@@ -232,6 +240,9 @@ class WardrobeApp:
         # make the wardrobe window/GUI
         self.root = root
 
+        # Create the filepath for the images
+        self.file_path = file_path
+
         # create variables to hold which radio button is selected (to track which option is selected)
         # These variables hold the "label" text for each radio button, so its updated based on which one is clicked
         self.weather_selection = tk.StringVar()
@@ -365,14 +376,8 @@ class WardrobeApp:
         self.root.config(menu = self.menubar)
 
     def create_photo(self, image_name):
-        # Check if its a top of a bottom to get the appropriate file path
-        if 'top' in image_name:
-            path = tops_file_path
-        else:
-            path = bottoms_file_path
-
         # load the image in
-        load = Image.open(path + "\\" + image_name)
+        load = Image.open(self.file_path + "\\" + image_name)
         # Resize the image so it fits in the frame
         image_resized = load.resize((int(FRAME_WIDTH), int(FRAME_HEIGHT)), Image.ANTIALIAS)
         # Create the image so tkinter can read it
@@ -518,14 +523,8 @@ class WardrobeApp:
 
     # function to update the photo when a button is pressed
     def update_photo(self, image_name):
-        # Check if its a top of a bottom to get the appropriate file path
-        if 'top' in image_name:
-            path = tops_file_path
-        else:
-            path = bottoms_file_path
-
         # load the image in
-        load = Image.open(path + "\\" + image_name)
+        load = Image.open(self.file_path + "\\" + image_name)
         # Resize the image so it fits in the frame
         image_resized = load.resize((int(FRAME_WIDTH), int(FRAME_HEIGHT)), Image.ANTIALIAS)
         # Create the image so tkinter can read it
@@ -677,6 +676,10 @@ class WardrobeApp:
         if len(master_bottoms_list) <= 1:
             self.button_next_bottom.config(state='disabled')
 
+    # function to load a new wardrobe into the program (change the file path)
+    #def load_wardrobe(self):
+        # Open file explore to get the user to choose the folder that contains the clothing
+
 
 '''
 Things for the future:
@@ -699,6 +702,9 @@ Be able to edit the categories within the app
     - can either "add new" or "remove"
     - DONE add: then the title of the image gets edited to have the new category appended to it (title + ", " + category)
     - DONE remove: then the title of the image gets edited to remove the category
+    
+When you first start the program it will ask you to choose the filepath. Then it will remember it for next time.
+When you want a new file path you go to file - Load Wardrobe
             
 '''
 root = tk.Tk()
