@@ -80,12 +80,7 @@ all_tops = os.listdir(tops_file_path)
 # Get all the bottoms from the bottoms folder
 all_bottoms = os.listdir(bottoms_file_path)
 
-"""
-all_tops = ['top1.jpg', "top2.jpg", "top3.jpg", "top4.jpg", "top5.jpg", "top6.jpg", "top7.jpg", "top8.jpg", "top9.jpg",
-            "top10.jpg"]
-all_bottoms = ["bottom1.jpg", "bottom2.jpg", "bottom3.jpg", "bottom4.jpg", "bottom5.jpg", "bottom6.jpg", "bottom7.jpg",
-               "bottom8.jpg", "bottom9.jpg"]
-"""
+
 # Master lists - these will be updated in the program (when weather and/or occasions are selected)
 # and used in the create_photo function to display the appropriate pictures
 
@@ -256,6 +251,7 @@ class WardrobeApp:
         self.create_buttons()
         # self.CreateLabels()
         self.create_menu_buttons()
+        self.create_menubar()
 
         # Upload the initial top and the bottom picture into the frame (indices initially = 0)
         self.create_photo(master_tops_list[self.top_index])
@@ -345,6 +341,29 @@ class WardrobeApp:
         # Place occasion menu button on the root
         self.occasion_menubutton.place(relx=0.05, rely=0.3)
 
+    def create_menubar(self):
+        # Create a menu bar that appears at the top right hand corner
+        self.menubar = tk.Menu(self.root)
+        # Create "file" menu that appears in the top right hand corner (in the menu bar)
+        self.file = tk.Menu(self.menubar, tearoff=0)
+        # Attach file to the menu bar
+        self.menubar.add_cascade(label="File", menu=self.file)
+        # Add the "Load Wardrobe" option
+        self.file.add_command(label="Load Wardrobe", command=None)
+        # Add the "Exit" option
+        self.file.add_command(label="Exit", command=self.root.destroy)
+
+        # Create "Edit" menu that appears next to "file"
+        self.edit = tk.Menu(self.menubar, tearoff=0)
+        # Attach edit to the menu bar
+        self.menubar.add_cascade(label="Edit", menu=self.edit)
+        # Add the "Add New Top" option
+        self.edit.add_command(label="Add New Top", command=None)
+        # Add the "Add New Bottom" option
+        self.edit.add_command(label="Add New Bottom", command=None)
+
+        self.root.config(menu = self.menubar)
+
     def create_photo(self, image_name):
         # Check if its a top of a bottom to get the appropriate file path
         if 'top' in image_name:
@@ -375,8 +394,6 @@ class WardrobeApp:
             self.bottom_image_label.image = photo
             # Place the image into the root
             self.bottom_image_label.place(x=0, y=0)
-
-
 
     # function to go to the previous top
     def top_prev_photo(self):
@@ -499,6 +516,7 @@ class WardrobeApp:
                 elif item == 'top':
                     self.button_next_top.config(state='normal')
 
+    # function to update the photo when a button is pressed
     def update_photo(self, image_name):
         # Check if its a top of a bottom to get the appropriate file path
         if 'top' in image_name:
@@ -541,10 +559,8 @@ class WardrobeApp:
 
         # If the selection made was to filter the weather then get the appropriate list based on what weather
         # type was selected
-        print("selection: " + selection)
         if selection == 'weather':
             if self.weather_selection.get() == 'Show All':
-                print("working")
                 weather_tops_list = all_tops
                 weather_bottoms_list = all_bottoms
             elif self.weather_selection.get() == 'Hot':
@@ -607,7 +623,6 @@ class WardrobeApp:
         elif ((self.occasion_selection.get() != 'Show All') and (self.occasion_selection.get() != '')) and \
                 ((self.weather_selection.get() == 'Show All') or (self.weather_selection.get() == '')):
             # Update master list
-            print("working2")
             master_tops_list = occasion_tops_list
             master_bottoms_list = occasion_bottoms_list
 
@@ -633,8 +648,8 @@ class WardrobeApp:
         # Otherwise run create_photo to add the first photo to the frame
         if len(master_tops_list) == 0:
             self.image_label = tk.Label(self.frame_top, text="No tops", bg="white", width=int(FRAME_WIDTH),
-                                   height=int(FRAME_HEIGHT))
-            #self.top_image_label.place_forget()
+                                        height=int(FRAME_HEIGHT))
+            # self.top_image_label.place_forget()
         else:
             self.update_photo(master_tops_list[self.top_index])
 
@@ -642,8 +657,8 @@ class WardrobeApp:
         # otherwise run create_photo to add the first photo to the frame
         if len(master_bottoms_list) == 0:
             self.image_label = tk.Label(self.frame_bottom, text="No Bottoms", bg='white', width=int(FRAME_WIDTH),
-                                   height=int(FRAME_HEIGHT))
-            #self.bottom_image_label.place_forget()
+                                        height=int(FRAME_HEIGHT))
+            # self.bottom_image_label.place_forget()
         else:
             self.update_photo(master_bottoms_list[self.bottom_index])
 
@@ -662,15 +677,29 @@ class WardrobeApp:
         if len(master_bottoms_list) <= 1:
             self.button_next_bottom.config(state='disabled')
 
+
 '''
 Things for the future:
+Fix what happens if there are no options for the weather and occasion combination
+
 Be able to add an item to the wardrobe from within the app (go file, add item):
     when you add the item you can choose:
     1. if its a top or bottom
     2. select which weather categories it falls under
     3. select which occasion categories it falls under
-    Then it is automatically added to the appropriate folders and named based on if its a top or bottom + 
-    the length of the all tops list +1 (since you're adding a new item)
+    Then it is automatically added to the appropriate folder and named based on if its a top or bottom + 
+    the length of the all tops list +1 (since you're adding a new item) + weather categories + occasion categories
+
+Be able to change the file path where the images are stored
+- Go to file, change directory and it will make you choose where "All Tops" and "All Bottoms" are located
+
+Be able to edit the categories within the app
+- view the categories an item falls under and add/remove a category accordingly
+    - this would be done by right clicking and going to an edit categories option to display the current categories
+    - can either "add new" or "remove"
+    - DONE add: then the title of the image gets edited to have the new category appended to it (title + ", " + category)
+    - DONE remove: then the title of the image gets edited to remove the category
+            
 '''
 root = tk.Tk()
 app = WardrobeApp(root)
