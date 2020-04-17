@@ -130,8 +130,8 @@ class WardrobeApp:
         self.occasion_selection = tk.StringVar()
 
         # variable to hold image labels
-        self.top_image_label = ''
-        self.bottom_image_label = ''
+        self.top_image_label = tk.Label()
+        self.bottom_image_label = tk.Label()
 
         # Index numbers to keep track of which top/bottom item we are looking at
         # So when we click next and previous we can move through the items
@@ -149,7 +149,7 @@ class WardrobeApp:
 
         # First check if another wardrobe was loaded last time (if Directory (DO NOT EDIT).txt exists)
         try:
-            with open('Directory (DO NOT EDIT.txt','r') as f:
+            with open('Directory (DO NOT EDIT.txt', 'r') as f:
                 # if it exists then get the file path from there
                 self.file_path = f.read()
         # if it doesn't exist then get the user to pick a folder
@@ -178,6 +178,11 @@ class WardrobeApp:
         if self.file_path != '':
             self.create_photo(self.master_tops_list[self.top_index])
             self.create_photo(self.master_bottoms_list[self.bottom_index])
+
+        # self.edit_categories.menu = tk.Canvas()
+        # When you right click the image you are able to edit the categories
+        self.top_image_label.bind("<Button-3>", self.right_clicked_image_top)
+        self.bottom_image_label.bind("<Button-3>", self.right_clicked_image_bottom)
 
     def create_frame(self):
         # add title to window
@@ -436,7 +441,7 @@ class WardrobeApp:
         else:
             self.bottom_image_label = tk.Label(self.frame_bottom, image=photo)
             # Save a reference so that tkinter doesnt doesn't send it to the garbage collector
-            # when the function closes (so the widget can still hold onto the image
+            # when the function closes (so the widget can still hold onto the image)
             self.bottom_image_label.image = photo
             # Place the image into the root
             self.bottom_image_label.place(x=0, y=0)
@@ -748,27 +753,98 @@ class WardrobeApp:
         if len(self.master_bottoms_list) <= 1:
             self.button_next_bottom.config(state='disabled')
 
+    # function called when user right clicks a tops image
+    def right_clicked_image_top(self, event):
+        # Set image_type to be a top so we know we are editing tops
+        self.image_type = 'bottom'
+
+        print("right click top!")
+        # Call the edit image function and tell it that you are editing a top item
+        # Make sure it doesn't keep creating menus when you right click
+        # If the menu already exists, then forget it an make a new one
+        try:
+            print("working")
+            self.edit_categories.place_forget()
+            self.edit_image_options()
+        except Exception:
+            self.edit_image_options()
+
+    # function called when user right clicks a bottoms image
+    def right_clicked_image_bottom(self, event):
+        # Set image_type to be a bottom so we know we are editing bottoms
+        self.image_type = 'bottom'
+
+        print("right click bottom!")
+        # Call the edit image function and tell it that you are editing a bottom item
+        # Make sure it doesn't keep creating menus when you right click
+        # If the menu already exists, then forget it an make a new one
+        try:
+            print("working")
+            self.edit_categories.place_forget()
+            self.edit_image_options()
+        except Exception:
+            self.edit_image_options()
+
+    # Function that creates the menu to edit image categories when you right click an image (called by right_clicked..)
+    def edit_image_options(self):
+        # Get the x and y coordinated of the cursor
+        cursor_x = int(self.root.winfo_pointerx() - self.root.winfo_rootx())
+        cursor_y = int(self.root.winfo_pointery() - self.root.winfo_rooty())
+
+        # Create "edit_categories" menu that appears when you right click
+        self.edit_categories = tk.Canvas(self.root, width=150, height=50, highlightbackground="gray",
+                                         highlightthickness=1)
+        self.edit_categories.place(x=cursor_x, y=cursor_y)
+
+        self.edit_image_selection = tk.StringVar()
+
+        self.R1 = tk.Radiobutton(self.edit_categories, text="Edit Weather Filters", variable=self.edit_image_selection,
+                                 value='weather', indicator=0, command=self.category_editor)
+        self.R1.pack(anchor="w", fill='x')
+
+        self.R2 = tk.Radiobutton(self.edit_categories, text="Edit Occasion Filters", variable=self.edit_image_selection,
+                                 value='occasion', indicator=0, command=self.category_editor)
+        self.R2.pack(anchor="w", fill='x')
+
+    # Function that
+    def category_editor(self):
+        # Close the menu
+        self.edit_categories.place_forget()
+
+        # if a top was selected then set all the widget variables to display top things
+
+        # if it is weather set all the widget variables to display weather things
+
+        # Open a new canvas that shows all the categories and asks which one you want to add
+        self.editor = tk.Toplevel()
+        # add title to window
+        self.editor.title("Edit Weather Categories")
+        # change the size of the window
+        self.editor_canvas = tk.Canvas(self.editor, height=400, width=600)
+        self.editor_canvas.pack()
+
+        # Show the image of the selected top
+        # Set the frame
+        self.frame_top_edit = tk.Frame(self.editor, bg='#80c1ff')
+        self.frame_top_edit.place(relx=0.1, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
+
+        # Put the top image inside the frame (remember the image photo is saved in the original top_image_label.image
+        self.image_label = tk.Label(self.frame_top_edit, image=self.top_image_label.image)
+        # Save a reference so that tkinter doesnt doesn't send it to the garbage collector
+        # when the function closes (so the widget can still hold onto the image)
+        self.image_label.image = self.top_image_label.image
+        self.image_label.place(x=0, y=0)
+
+        # Show the Edit Weather Categories window
+        self.editor.mainloop()
+        print(self.edit_image_selection.get())
+
+
 
 '''
 Things for the future:
 Fix what happens if there are no options for the weather and occasion combination
 
-Let it save the wardrobe directory so that next you open it it can remember
-    start by checking if "wardrobe directory (DO NOT EDIT).txt" exists
-    if it doesnt
-        ask the user to select the directory
-        save the directory in self.file_path
-        write a txt file called "wardrobe directory (DO NOT EDIT).txt" and write the directory in it
-        save the file in the working directory
-    if it does:
-        open the file and read the first line (which is the file path)
-        save this line as self.file_path
-        
-    Also when they change the wardrobe using load wardrobe button
-        select the folder as normal and save path in self.file_path
-        open the txt file and write self.file_path in it 
-        close the file
-        
 Be able to add an item to the wardrobe from within the app (go file, add item):
     when you add the item you can choose:
     1. if its a top or bottom
@@ -788,7 +864,7 @@ Be able to edit the categories within the app
     - DONE remove: then the title of the image gets edited to remove the category
     
 DONE When you first start the program it will ask you to choose the filepath. 
-Then it will remember it for next time.
+DONE Then it will remember it for next time.
 DONE When you want a new file path you go to file - Load Wardrobe
             
 '''
