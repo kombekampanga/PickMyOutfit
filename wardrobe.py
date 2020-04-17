@@ -183,6 +183,9 @@ class WardrobeApp:
         # When you right click the image you are able to edit the categories
         self.top_image_label.bind("<Button-3>", self.right_clicked_image_top)
         self.bottom_image_label.bind("<Button-3>", self.right_clicked_image_bottom)
+        # when you left click out of the image then get of the edit categories option
+        self.root.bind("<Button-1>", self.left_clicked)
+        self.root.bind("<Button-1>", self.left_clicked)
 
     def create_frame(self):
         # add title to window
@@ -784,6 +787,15 @@ class WardrobeApp:
             self.edit_image_options()
         except Exception:
             self.edit_image_options()
+
+    # function called when the user left clicks in the root (get rid of edit categories)
+    def left_clicked(self, event):
+        # if the edit categories option is present (user right clicked an image) then remove it
+        # if the edit categories option was not present (the user just clicked the root for no reason) then do nothing
+        try:
+            self.edit_categories.place_forget()
+        except Exception:
+            pass
 
     # Function that creates the menu to edit image categories when you right click an image (called by right_clicked..)
     def edit_image_options(self):
