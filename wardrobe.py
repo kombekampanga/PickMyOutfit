@@ -63,177 +63,7 @@ FRAME_WIDTH = WINDOW_WIDTH * 0.3
 FRAME_HEIGHT = WINDOW_HEIGHT * 0.3
 PERCENTAGE_EITHER_SIDE_OF_FRAME = 0.35
 
-##############################  LIST CONTAINING ALL THE CLOTHING IMAGES  ###########################################
-# list of all image names
-'''
-maybe in the future instead of loading all the lists here, we can have a function that gets the required images from
-the right folder depending on which selection is made
-Right now we are just making lists to see if this will work
-'''
 
-# Get the file path where the images are saved:
-file_path = 'C:\\Users\kombe\Desktop\Wardrobe\PickMyOutfit\All Clothes'
-'''
-# Get all the clothes from the folder
-all_clothes = os.listdir(file_path)
-
-# Get all the tops from the tops folder
-all_tops = []
-for item in all_clothes:
-    if 'top' in item:
-        all_tops.append(item)
-
-# Get all the bottoms from the bottoms folder
-all_bottoms = []
-for item in all_clothes:
-    if 'bottom' in item:
-        all_bottoms.append(item)
-
-# Master lists - these will be updated in the program (when weather and/or occasions are selected)
-# and used in the create_photo function to display the appropriate pictures
-
-# To begin with these will show all the tops and bottoms because no selection has been made
-master_tops_list = all_tops
-master_bottoms_list = all_bottoms
-
-################################  WEATHER AND OCCASION FILTER VARIABLES  ###########################################
-
-# Weather and Occasion filter variables
-
-# Weather and occasion lists - these will be updated in the filter function (when weather and/or
-# occasions are selected) and then used to update the master lists accordingly
-weather_tops_list = []
-weather_bottoms_list = []
-occasion_tops_list = []
-occasion_bottoms_list = []
-
-# lists of weather category titles
-weather_categories = ['Show All', 'Hot', 'Warm', 'Cold and Windy', 'Cold and Rainy']
-occasion_categories = ['Show All', 'Work', 'House Party', 'Town', '21st', 'Everyday', 'Family']
-
-# Weather specified clothing
-# Initialise weather category lists
-hot_tops = []
-hot_bottoms = []
-
-warm_tops = []
-warm_bottoms = []
-
-windy_tops = []
-windy_bottoms = []
-
-rainy_tops = []
-rainy_bottoms = []
-
-# Initialise occasion category lists
-work_tops = []
-work_bottoms = []
-
-house_party_tops = []
-house_party_bottoms = []
-
-town_tops = []
-town_bottoms = []
-
-twenty_first_tops = []
-twenty_first_bottoms = []
-
-everyday_tops = []
-everyday_bottoms = []
-
-family_tops = []
-family_bottoms = []
-
-# check the weather category listed in the top names and add it to the appropriate lists
-for image_title in all_tops:
-    if 'hot' in image_title:
-        hot_tops.append(image_title)
-    if 'warm' in image_title:
-        warm_tops.append(image_title)
-    if 'windy' in image_title:
-        windy_tops.append(image_title)
-    if 'rainy' in image_title:
-        rainy_tops.append(image_title)
-
-# check the weather category listed in the bottom names and add it to the appropriate lists
-for image_title in all_bottoms:
-    if 'hot' in image_title:
-        hot_bottoms.append(image_title)
-    if 'warm' in image_title:
-        warm_bottoms.append(image_title)
-    if 'windy' in image_title:
-        windy_bottoms.append(image_title)
-    if 'rainy' in image_title:
-        rainy_bottoms.append(image_title)
-
-# check the occasion category listed in the top names and add it to the appropriate lists
-for image_title in all_tops:
-    if 'work' in image_title:
-        work_tops.append(image_title)
-    if 'house party' in image_title:
-        house_party_tops.append(image_title)
-    if 'town' in image_title:
-        town_tops.append(image_title)
-    if '21st' in image_title:
-        twenty_first_tops.append(image_title)
-    if 'everyday' in image_title:
-        everyday_tops.append(image_title)
-    if 'family' in image_title:
-        family_tops.append(image_title)
-
-# check the occasion category listed in the bottom names and add it to the appropriate lists
-for image_title in all_bottoms:
-    if 'work' in image_title:
-        work_bottoms.append(image_title)
-    if 'house party' in image_title:
-        house_party_bottoms.append(image_title)
-    if 'town' in image_title:
-        town_bottoms.append(image_title)
-    if '21st' in image_title:
-        twenty_first_bottoms.append(image_title)
-    if 'everyday' in image_title:
-        everyday_bottoms.append(image_title)
-    if 'family' in image_title:
-        family_bottoms.append(image_title)
-
-'''
-hot_tops = ['top1.jpg', 'top4.jpg', 'top6.jpg', 'top9.jpg']
-hot_bottoms = ['bottom2.jpg', 'bottom5.jpg', 'bottom6.jpg', 'bottom9.jpg']
-
-warm_tops = ['top1.jpg', 'top2.jpg', 'top5.jpg', 'top8.jpg', 'top10.jpg']
-warm_bottoms = ['bottom1.jpg', 'bottom3.jpg', 'bottom4.jpg', 'bottom7.jpg', 'bottom8.jpg', 'bottom9.jpg']
-
-windy_tops = ["top3.jpg", "top2.jpg", "top5.jpg", 'top8.jpg', 'top10.jpg']
-windy_bottoms = ['bottom1.jpg', 'bottom3.jpg', 'bottom4.jpg', 'bottom7.jpg', 'bottom8.jpg']
-
-rainy_tops = ['top3.jpg', "top2.jpg", 'top5.jpg', 'top7.jpg', 'top8.jpg', 'top10.jpg']
-rainy_bottoms = ['bottom1.jpg', 'bottom4.jpg', 'bottom7.jpg', 'bottom8.jpg']
-'''
-# Occasion specified clothing
-
-'''
-work_tops = ['top5.jpg', 'top8.jpg', 'top9.jpg']
-work_bottoms = ['bottom8.jpg', 'bottom9.jpg']
-
-house_party_tops = ['top1.jpg', 'top6.jpg', 'top10.jpg']
-house_party_bottoms = ['bottom1.jpg', 'bottom2.jpg', 'bottom5.jpg', 'bottom6.jpg', 'bottom7.jpg']
-
-town_tops = ['top2.jpg', 'top4.jpg']
-town_bottoms = ['bottom5.jpg', 'bottom7.jpg']
-
-twenty_first_tops = ["top2.jpg", "top4.jpg"]
-twenty_first_bottoms = ["bottom2.jpg", "bottom4.jpg", "bottom7.jpg"]
-
-everyday_tops = ['top1.jpg', 'top3.jpg', 'top5,jpg', 'top7.jpg', 'top10.jpg']
-everyday_bottoms = ['bottom1.jpg', "bottom3.jpg", "bottom5.jpg", "bottom6.jpg", 'bottom7.jpg']
-
-family_tops = ["top1.jpg", "top5.jpg", "top7.jpg", "top8.jpg", "top9.jpg"]
-family_bottoms = ['bottom1.jpg', 'bottom2.jpg', 'bottom6.jpg', 'bottom7.jpg', 'bottom8.jpg', 'bottom9.jpg']
-'''
-
-
-#######################################  OTHER VARIABLES  ###############################################
-'''
 # Wardrobe class that contains the window for the clothes to be displayed
 class WardrobeApp:
     def __init__(self, root):
@@ -316,6 +146,32 @@ class WardrobeApp:
         self.create_menubar()
 
         # Load clothes into the wardrobe
+
+        # First check if another wardrobe was loaded last time (if Directory (DO NOT EDIT).txt exists)
+        try:
+            with open('Directory (DO NOT EDIT.txt','r') as f:
+                # if it exists then get the file path from there
+                self.file_path = f.read()
+        # if it doesn't exist then get the user to pick a folder
+        except FileNotFoundError:
+            # Open file explore to get the user to choose the folder that contains the clothing
+            self.file_path = filedialog.askdirectory()
+            # Check if a file path was chosen
+            try:
+                self.all_clothes = os.listdir(self.file_path)
+            # if no path was chosen
+            except FileNotFoundError:
+                # keep asking until a path is chosen
+                while self.file_path == '':
+                    self.file_path = filedialog.askdirectory()
+
+            # When they select a folder then the while loop will stop
+            # Then write a file called "Directory (DO NOT EDIT).txt", save the file path in it and save it to the
+            # Working directory
+            with open('Directory (DO NOT EDIT.txt', "w") as f:
+                f.write(self.file_path)
+
+        # Load a the wardrobe
         self.load_wardrobe()
 
         # Upload the initial top and the bottom picture into the frame (indices initially = 0)
@@ -429,10 +285,11 @@ class WardrobeApp:
         # Add the "Add New Bottom" option
         self.edit.add_command(label="Add New Bottom", command=None)
 
-        self.root.config(menu = self.menubar)
+        self.root.config(menu=self.menubar)
 
-    # function to load the intial wardrobe into the program (change the file path)
+    # function to load the initial wardrobe into the program (change the file path)
     def load_wardrobe(self):
+        """'
         # Open file explore to get the user to choose the folder that contains the clothing
         new_file_path = filedialog.askdirectory()
 
@@ -452,8 +309,9 @@ class WardrobeApp:
                     self.file_path = new_file_path
 
             self.all_clothes = os.listdir(self.file_path)
-
-
+        """
+        # Get all the clothes from the folder
+        self.all_clothes = os.listdir(self.file_path)
         # Get all the tops from the tops folder
         # Empty the tops list first
         self.all_tops = []
@@ -854,6 +712,16 @@ class WardrobeApp:
 
     # function to load a new wardrobe into the program (change the file path)
     def load_new_wardrobe(self):
+
+        # Get the new folder that contains the clothes
+        try:
+            self.file_path = filedialog.askdirectory()
+            # Save the new wardrobe in the "Directory (DO NOT EDIT).txt" file
+            with open('Directory (DO NOT EDIT.txt', "w") as f:
+                f.write(self.file_path)
+        # if the user doesn't choose a folder let it pass (they can still use the old one currently loaded)
+        except FileNotFoundError:
+            pass
         # Use the load_wardrobe function to get the new file path and new images
         self.load_wardrobe()
 
@@ -880,10 +748,27 @@ class WardrobeApp:
         if len(self.master_bottoms_list) <= 1:
             self.button_next_bottom.config(state='disabled')
 
+
 '''
 Things for the future:
 Fix what happens if there are no options for the weather and occasion combination
 
+Let it save the wardrobe directory so that next you open it it can remember
+    start by checking if "wardrobe directory (DO NOT EDIT).txt" exists
+    if it doesnt
+        ask the user to select the directory
+        save the directory in self.file_path
+        write a txt file called "wardrobe directory (DO NOT EDIT).txt" and write the directory in it
+        save the file in the working directory
+    if it does:
+        open the file and read the first line (which is the file path)
+        save this line as self.file_path
+        
+    Also when they change the wardrobe using load wardrobe button
+        select the folder as normal and save path in self.file_path
+        open the txt file and write self.file_path in it 
+        close the file
+        
 Be able to add an item to the wardrobe from within the app (go file, add item):
     when you add the item you can choose:
     1. if its a top or bottom
@@ -893,7 +778,7 @@ Be able to add an item to the wardrobe from within the app (go file, add item):
     the length of the all tops list +1 (since you're adding a new item) + weather categories + occasion categories
 
 Be able to change the file path where the images are stored
-- Go to file, change directory and it will make you choose where "All Tops" and "All Bottoms" are located
+- DONE Go to file, change directory and it will make you choose where "All Tops" and "All Bottoms" are located
 
 Be able to edit the categories within the app
 - view the categories an item falls under and add/remove a category accordingly
@@ -902,8 +787,9 @@ Be able to edit the categories within the app
     - DONE add: then the title of the image gets edited to have the new category appended to it (title + ", " + category)
     - DONE remove: then the title of the image gets edited to remove the category
     
-When you first start the program it will ask you to choose the filepath. Then it will remember it for next time.
-When you want a new file path you go to file - Load Wardrobe
+DONE When you first start the program it will ask you to choose the filepath. 
+Then it will remember it for next time.
+DONE When you want a new file path you go to file - Load Wardrobe
             
 '''
 root = tk.Tk()
