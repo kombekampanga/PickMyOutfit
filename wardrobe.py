@@ -152,6 +152,7 @@ class WardrobeApp:
             with open('Directory (DO NOT EDIT.txt', 'r') as f:
                 # if it exists then get the file path from there
                 self.file_path = f.read()
+
         # if it doesn't exist then get the user to pick a folder
         except FileNotFoundError:
             # Open file explore to get the user to choose the folder that contains the clothing
@@ -183,9 +184,9 @@ class WardrobeApp:
         # When you right click the image you are able to edit the categories
         self.top_image_label.bind("<Button-3>", self.right_clicked_image_top)
         self.bottom_image_label.bind("<Button-3>", self.right_clicked_image_bottom)
-        # when you left click out of the image then get of the edit categories option
-        self.root.bind("<Button-1>", self.left_clicked)
-        self.root.bind("<Button-1>", self.left_clicked)
+        # when you left click out of the image then get off the edit categories option
+        self.canvas.bind("<Button-1>", self.left_clicked)
+        self.canvas.bind("<Button-1>", self.left_clicked)
 
     def create_frame(self):
         # add title to window
@@ -289,9 +290,9 @@ class WardrobeApp:
         # Attach edit to the menu bar
         self.menubar.add_cascade(label="Edit", menu=self.edit)
         # Add the "Add New Top" option
-        self.edit.add_command(label="Add New Top", command=None)
+        self.edit.add_command(label="Add New Top", command=self.new_top)
         # Add the "Add New Bottom" option
-        self.edit.add_command(label="Add New Bottom", command=None)
+        self.edit.add_command(label="Add New Bottom", command=self.new_bottom)
 
         self.root.config(menu=self.menubar)
 
@@ -759,7 +760,7 @@ class WardrobeApp:
     # function called when user right clicks a tops image
     def right_clicked_image_top(self, event):
         # Set image_type to be a top so we know we are editing tops
-        self.image_type = 'bottom'
+        self.image_type = 'top'
 
         print("right click top!")
         # Call the edit image function and tell it that you are editing a top item
@@ -818,7 +819,7 @@ class WardrobeApp:
                                  value='occasion', indicator=0, command=self.category_editor)
         self.R2.pack(anchor="w", fill='x')
 
-    # Function that
+    # Function that displays a new window to edit filters
     def category_editor(self):
         # Close the menu
         self.edit_categories.place_forget()
@@ -829,29 +830,277 @@ class WardrobeApp:
 
         # Open a new canvas that shows all the categories and asks which one you want to add
         self.editor = tk.Toplevel()
+
         # add title to window
-        self.editor.title("Edit Weather Categories")
+        if self.edit_image_selection.get() == 'occasion':
+            self.editor.title("Edit Occasion Categories")
+        elif self.edit_image_selection.get() == 'weather':
+            self.editor.title("Edit Weather Categories")
+
         # change the size of the window
         self.editor_canvas = tk.Canvas(self.editor, height=400, width=600)
         self.editor_canvas.pack()
 
         # Show the image of the selected top
         # Set the frame
-        self.frame_top_edit = tk.Frame(self.editor, bg='#80c1ff')
-        self.frame_top_edit.place(relx=0.1, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
+        self.frame_image_edit = tk.Frame(self.editor, bg='#80c1ff')
+        self.frame_image_edit.place(relx=0.1, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
 
-        # Put the top image inside the frame (remember the image photo is saved in the original top_image_label.image
-        self.image_label = tk.Label(self.frame_top_edit, image=self.top_image_label.image)
-        # Save a reference so that tkinter doesnt doesn't send it to the garbage collector
-        # when the function closes (so the widget can still hold onto the image)
-        self.image_label.image = self.top_image_label.image
+        if self.image_type == 'top':
+            # Put the top image inside the frame (remember the image photo is saved in the original
+            # top_image_label.image
+            self.image_label = tk.Label(self.frame_image_edit, image=self.top_image_label.image)
+            # Save a reference so that tkinter doesnt doesn't send it to the garbage collector
+            # when the function closes (so the widget can still hold onto the image)
+            self.image_label.image = self.top_image_label.image
+
+        elif self.image_type == 'bottom':
+            # Put the bottom image inside the frame (remember the image photo is saved in the original
+            # bottom_image_label.image
+            self.image_label = tk.Label(self.frame_image_edit, image=self.bottom_image_label.image)
+            # Save a reference so that tkinter doesnt doesn't send it to the garbage collector
+            # when the function closes (so the widget can still hold onto the image)
+            self.image_label.image = self.bottom_image_label.image
+
+        # Place the image
         self.image_label.place(x=0, y=0)
+
+        # Get the image name
+        if self.image_type == 'top':
+            image_name = self.master_tops_list[self.top_index]
+        elif self.image_type == 'bottom':
+            image_name = self.master_bottoms_list[self.bottom_index]
+
+        # Show the filters
+        self.frame_options_edit = tk.Frame(self.editor)
+        self.frame_options_edit.place(relx=0.5, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
+
+        if self.edit_image_selection.get() == 'weather':
+            self.hot_selection = tk.IntVar()
+            self.warm_selection = tk.IntVar()
+            self.windy_selection = tk.IntVar()
+            self.rainy_selection = tk.IntVar()
+
+            self.hot_filter = tk.Checkbutton(self.frame_options_edit, text="Hot", variable=self.hot_selection,
+                                             command=self.change_hot_filter)
+            self.hot_filter.pack(anchor='w')
+
+            self.warm_filter = tk.Checkbutton(self.frame_options_edit, text="Warm", variable=self.warm_selection,
+                                              command=self.change_warm_filter)
+            self.warm_filter.pack(anchor='w')
+
+            self.windy_filter = tk.Checkbutton(self.frame_options_edit, text="Cold and Windy",
+                                               variable=self.windy_selection, command=self.change_windy_filter)
+            self.windy_filter.pack(anchor='w')
+
+            self.rainy_filter = tk.Checkbutton(self.frame_options_edit, text="Cold and Rainy",
+                                               variable=self.rainy_selection, command=self.change_rainy_filter)
+            self.rainy_filter.pack(anchor='w')
+
+            # Get the filters currently applied to that image
+            if 'hot' in image_name:
+                self.hot_filter.select()
+            if 'warm' in image_name:
+                self.warm_filter.select()
+            if 'windy' in image_name:
+                self.windy_filter.select()
+            if 'rainy' in image_name:
+                self.rainy_filter.select()
+
+        elif self.edit_image_selection.get() == 'occasion':
+            self.work_selection = tk.IntVar()
+            self.house_party_selection = tk.IntVar()
+            self.town_selection = tk.IntVar()
+            self.twenty_first_selection = tk.IntVar()
+            self.everyday_selection = tk.IntVar()
+            self.family_selection = tk.IntVar()
+
+            self.work_filter = tk.Checkbutton(self.frame_options_edit, text="Work", variable=self.work_selection,
+                                              command=self.change_work_filter)
+            self.work_filter.pack(anchor='w')
+
+            self.house_party_filter = tk.Checkbutton(self.frame_options_edit, text="House Party",
+                                                     variable=self.house_party_selection,
+                                                     command=self.change_house_party_filter)
+            self.house_party_filter.pack(anchor='w')
+
+            self.town_filter = tk.Checkbutton(self.frame_options_edit, text="Town", variable=self.town_selection,
+                                              command=self.change_town_filter)
+            self.town_filter.pack(anchor='w')
+
+            self.twenty_first_filter = tk.Checkbutton(self.frame_options_edit, text="21st",
+                                                      variable=self.twenty_first_selection,
+                                                      command=self.change_twenty_first_filter)
+            self.twenty_first_filter.pack(anchor='w')
+
+            self.everyday_filter = tk.Checkbutton(self.frame_options_edit, text="Everyday",
+                                                  variable=self.everyday_selection, command=self.change_everyday_filter)
+            self.everyday_filter.pack(anchor='w')
+
+            self.family_filter = tk.Checkbutton(self.frame_options_edit, text="Family", variable=self.family_selection,
+                                                command=self.change_family_filter)
+            self.family_filter.pack(anchor='w')
+
+            # Get the filters currently applied to that image
+            if 'work' in image_name:
+                self.work_filter.select()
+            if 'house party' in image_name:
+                self.house_party_filter.select()
+            if 'town' in image_name:
+                self.town_filter.select()
+            if '21st' in image_name:
+                self.twenty_first_filter.select()
+            if 'everyday' in image_name:
+                self.everyday_filter.select()
+            if 'family' in image_name:
+                self.family_filter.select()
 
         # Show the Edit Weather Categories window
         self.editor.mainloop()
         print(self.edit_image_selection.get())
 
+    # Function called when user wants to change the hot weather filter on a clothing item (add or remove it)
+    # Called when check button is pressed in Edit Weather Categories window
+    def change_hot_filter(self):
+        # Check if user is selecting (1) or deselecting (0) the filter and add/remove accordingly
+        if self.hot_selection.get() == 1:
+            self.add_filter('hot')
+        if self.hot_selection.get() == 0:
+            self.remove_filter('hot')
 
+    # Function called when user wants to change the warm weather filter on a clothing item (add or remove it)
+    # Called when check button is pressed in Edit Weather Categories window
+    def change_warm_filter(self):
+        # Check if user is selecting (1) or deselecting (0) the filter and add/remove accordingly
+        if self.warm_selection.get() == 1:
+            self.add_filter('warm')
+        if self.warm_selection.get() == 0:
+            self.remove_filter('warm')
+
+    # Function called when user wants to change the cold and windy weather filter on a clothing item (add or remove it)
+    # Called when check button is pressed in Edit Weather Categories window
+    def change_windy_filter(self):
+        # Check if user is selecting (1) or deselecting (0) the filter and add/remove accordingly
+        if self.windy_selection.get() == 1:
+            self.add_filter('windy')
+        if self.windy_selection.get() == 0:
+            self.remove_filter('windy')
+
+    # Function called when user wants to change the cold and rainy weather filter on a clothing item (add or remove it)
+    # Called when check button is pressed in Edit Weather Categories window
+    def change_rainy_filter(self):
+        # Check if user is selecting (1) or deselecting (0) the filter and add/remove accordingly
+        if self.rainy_selection.get() == 1:
+            self.add_filter('rainy')
+        if self.rainy_selection.get() == 0:
+            self.remove_filter('rainy')
+
+    # Function called when user wants to change the work occasion filter on a clothing item (add or remove it)
+    # Called when check button is pressed in Edit Occasion Categories window
+    def change_work_filter(self):
+        # Check if user is selecting (1) or deselecting (0) the filter and add/remove accordingly
+        if self.work_selection.get() == 1:
+            self.add_filter('work')
+        if self.work_selection.get() == 0:
+            self.remove_filter('work')
+
+    # Function called when user wants to change the town occasion filter on a clothing item (add or remove it)
+    # Called when check button is pressed in Edit Occasion Categories window
+    def change_town_filter(self):
+        # Check if user is selecting (1) or deselecting (0) the filter and add/remove accordingly
+        if self.town_selection.get() == 1:
+            self.add_filter('town')
+        if self.town_selection.get() == 0:
+            self.remove_filter('town')
+
+    # Function called when user wants to change the house party occasion filter on a clothing item (add or remove it)
+    # Called when check button is pressed in Edit Occasion Categories window
+    def change_house_party_filter(self):
+        # Check if user is selecting (1) or deselecting (0) the filter and add/remove accordingly
+        if self.house_party_selection.get() == 1:
+            self.add_filter('house party')
+        if self.house_party_selection.get() == 0:
+            self.remove_filter('house party')
+
+    # Function called when user wants to change the 21st occasion filter on a clothing item (add or remove it)
+    # Called when check button is pressed in Edit Occasion Categories window
+    def change_twenty_first_filter(self):
+        # Check if user is selecting (1) or deselecting (0) the filter and add/remove accordingly
+        if self.twenty_first_selection.get() == 1:
+            self.add_filter('21st')
+        if self.twenty_first_selection.get() == 0:
+            self.remove_filter('21st')
+
+    # Function called when user wants to change the everyday occasion filter on a clothing item (add or remove it)
+    # Called when check button is pressed in Edit Occasion Categories window
+    def change_everyday_filter(self):
+        # Check if user is selecting (1) or deselecting (0) the filter and add/remove accordingly
+        if self.everyday_selection.get() == 1:
+            self.add_filter('everyday')
+        if self.everyday_selection.get() == 0:
+            self.remove_filter('everyday')
+
+    # Function called when user wants to change the family occasion filter on a clothing item (add or remove it)
+    # Called when check button is pressed in Edit Occasion Categories window
+    def change_family_filter(self):
+        # Check if user is selecting (1) or deselecting (0) the filter and add/remove accordingly
+        if self.family_selection.get() == 1:
+            self.add_filter('family')
+        if self.family_selection.get() == 0:
+            self.remove_filter('family')
+
+    # Function used to add a filter to a clothing image (called by change_..._filter functions above)
+    def add_filter(self, added):
+        # Get the image name
+        if self.image_type == 'top':
+            image_title = self.master_tops_list[self.top_index]
+        elif self.image_type == 'bottom':
+            image_title = self.master_bottoms_list[self.bottom_index]
+
+        # Split the name into before the .jpg (or other extension) and the extension (this will exclude the '.')
+        name_list = image_title.split(".")
+        before_extension = name_list[0]
+        extension = name_list[1]
+
+        # Add the new category in between
+        new_title = before_extension + ", " + added + "." + extension
+
+        # Save the new name
+        os.rename((self.file_path + "\\" + image_title), (self.file_path + "\\" + new_title))
+
+        # reload the clothes
+        self.load_wardrobe()
+
+    # Function used to remove a filter from a clothing image (called by change_..._filter functions above)
+    def remove_filter(self, removed):
+        # Get the image name
+        if self.image_type == 'top':
+            image_title = self.master_tops_list[self.top_index]
+        elif self.image_type == 'bottom':
+            image_title = self.master_bottoms_list[self.bottom_index]
+
+        # Create a list with 2 elements - the first is everything before the word top, the second is everything after
+        new_name_list = image_title.split(removed)
+        # the first part of the new name
+        new_name_pt1 = new_name_list[0]
+        # The second part of the new name
+        new_name_pt2 = new_name_list[1]
+
+        # Then remove the comma that came before the removed word
+        index = new_name_pt1.rfind(",")
+        new_name_pt1 = new_name_pt1[0:index]
+
+        # Join the 2 parts together to form the new name
+        new_name = new_name_pt1 + new_name_pt2
+
+        # Save the new name
+        os.rename((self.file_path + "\\" + image_title), (self.file_path + "\\" + new_name))
+
+        # reload the clothes
+        self.load_wardrobe()
+
+
+    def new_bottom(self):
 
 '''
 Things for the future:
@@ -865,13 +1114,13 @@ Be able to add an item to the wardrobe from within the app (go file, add item):
     Then it is automatically added to the appropriate folder and named based on if its a top or bottom + 
     the length of the all tops list +1 (since you're adding a new item) + weather categories + occasion categories
 
-Be able to change the file path where the images are stored
+DONE Be able to change the file path where the images are stored
 - DONE Go to file, change directory and it will make you choose where "All Tops" and "All Bottoms" are located
 
-Be able to edit the categories within the app
-- view the categories an item falls under and add/remove a category accordingly
-    - this would be done by right clicking and going to an edit categories option to display the current categories
-    - can either "add new" or "remove"
+DONE: Be able to edit the categories within the app
+- DONE view the categories an item falls under and add/remove a category accordingly
+    - DONE this would be done by right clicking and going to an edit categories option to display the current categories
+    - DONE can either "add new" or "remove"
     - DONE add: then the title of the image gets edited to have the new category appended to it (title + ", " + category)
     - DONE remove: then the title of the image gets edited to remove the category
     
