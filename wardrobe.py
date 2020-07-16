@@ -957,6 +957,10 @@ class WardrobeApp:
             if 'family' in image_name:
                 self.family_filter.select()
 
+        # Add a save button
+        self.save_button = tk.Button(self.editor, text="Save", bg='light blue', command=self.close_editor)
+        self.save_button.place(relx=0.7, rely=0.8, relwidth=0.1, relheight=0.075)
+
         # Show the Edit Weather Categories window
         self.editor.mainloop()
         print(self.edit_image_selection.get())
@@ -1079,9 +1083,18 @@ class WardrobeApp:
                                             command=self.change_family_filter)
         self.family_filter.pack(anchor='w')
 
+        # Add a save button
+        self.save_button = tk.Button(self.editor, text="Save", bg='light blue', command=self.close_editor)
+        self.save_button.place(relx=0.7, rely=0.8, relwidth=0.1, relheight=0.075)
+
         # Show the Edit Categories window
         self.editor.mainloop()
         print(self.edit_image_selection.get())
+
+    # Function called when save button is pressed that closes the editor (new_item_category_editor and category
+    # editor functions)
+    def close_editor(self):
+        self.editor.destroy()
 
     # Function called when user wants to change the hot weather filter on a clothing item (add or remove it)
     # Called when check button is pressed in Edit Weather Categories window
