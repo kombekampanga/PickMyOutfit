@@ -1056,7 +1056,7 @@ class WardrobeApp:
         self.editor.mainloop()
         print(self.edit_image_selection.get())
 
-        
+
     # Function called when save button is pressed that closes the editor (new_item_category_editor and category
     # editor functions)
     def close_editor(self):
@@ -1285,13 +1285,38 @@ class WardrobeApp:
 Things for the future:
 Fix what happens if there are no options for the weather and occasion combination
 
-Be able to add an item to the wardrobe from within the app (go file, add item):
-    when you add the item you can choose:
-    1. if its a top or bottom
-    2. select which weather categories it falls under
-    3. select which occasion categories it falls under
-    Then it is automatically added to the appropriate folder and named based on if its a top or bottom + 
-    the length of the all tops list +1 (since you're adding a new item) + weather categories + occasion categories
+Fix what happens when you delete a clothing item and add a new one because there could be 2 top6's
+    - check all tops and all bottoms lists frequently to make sure there aren't duplicates
+
+Maybe have multiple files/classes?? Organise the file better so different files have different functions
+
+Make the app look cuter!!
+
+Add a favourites category! maybe just a checkbox or something on its own below the weather and occasion
+
+Find out how to get the current weather from a weather site (may need to input the time)
+    - certain temperature ranges can correspond to different weather filters
+    - Can read the temperature and automatically select a weather filter 
+    - Have a button for "today"
+
+Maybe you can choose a date in the future that you need an outfit for (and a time?) and it can tell you the weather 
+
+Save outfits so you can look through pre assembled looks for specific occasions/weather types
+
+Be able to delete items from the wardrobe from within the app (right click and remove)
+    - this would be done by right clicking and going to a delete item option
+    - A window will open saying are you sure you want to delete this item (could show the top)
+    - Window has "delete" and "cancel" buttons
+    - When the file is removed all the items after it decrease in number (e.g. if top6 was deleted then top7 becomes
+      top6 and top8 becomes top7 etc.
+      
+DONE Be able to add an item to the wardrobe from within the app (go file, add item):
+   DONE when you add the item you can choose:
+    DONE 1. if its a top or bottom
+    DONE 2. select which weather categories it falls under
+    DONE 3. select which occasion categories it falls under
+    DONE Then it is automatically added to the appropriate folder and named based on if its a top or bottom + 
+         the length of the all tops list +1 (since you're adding a new item) + weather categories + occasion categories
 
 DONE Be able to change the file path where the images are stored
 - DONE Go to file, change directory and it will make you choose where "All Tops" and "All Bottoms" are located
