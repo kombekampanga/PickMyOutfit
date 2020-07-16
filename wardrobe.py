@@ -1,4 +1,5 @@
 import os
+import shutil
 import tkinter as tk
 from tkinter import filedialog
 from PIL import Image, ImageTk
@@ -829,13 +830,6 @@ class WardrobeApp:
         # Close the menu
         self.edit_categories.place_forget()
 
-<<<<<<< Updated upstream
-        # if a top was selected then set all the widget variables to display top things
-
-        # if it is weather set all the widget variables to display weather things
-
-=======
->>>>>>> Stashed changes
         # Open a new canvas that shows all the categories and asks which one you want to add
         self.editor = tk.Toplevel()
 
@@ -1229,10 +1223,6 @@ class WardrobeApp:
         # reload the clothes
         self.load_wardrobe()
 
-<<<<<<< Updated upstream
-
-    def new_bottom(self):
-=======
     # Function called to add a new top to the wardrobe from within the app
     def new_top(self):
         # Set image_type to be a top so we know we are editing tops
@@ -1311,7 +1301,6 @@ class WardrobeApp:
             # self.R2.select()
             # self.R2.invoke()
 
->>>>>>> Stashed changes
 
 '''
 Things for the future:
