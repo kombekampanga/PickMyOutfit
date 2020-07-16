@@ -67,6 +67,9 @@ PERCENTAGE_EITHER_SIDE_OF_FRAME = 0.35
 # Wardrobe class that contains the window for the clothes to be displayed
 class WardrobeApp:
     def __init__(self, root):
+        # Create a variable to store whether its a top or bottom
+        self.image_type = tk.StringVar()
+
         # make the wardrobe window/GUI
         self.root = root
 
@@ -289,6 +292,7 @@ class WardrobeApp:
         self.edit = tk.Menu(self.menubar, tearoff=0)
         # Attach edit to the menu bar
         self.menubar.add_cascade(label="Edit", menu=self.edit)
+
         # Add the "Add New Top" option
         self.edit.add_command(label="Add New Top", command=self.new_top)
         # Add the "Add New Bottom" option
@@ -821,13 +825,17 @@ class WardrobeApp:
 
     # Function that displays a new window to edit filters
     def category_editor(self):
+
         # Close the menu
         self.edit_categories.place_forget()
 
+<<<<<<< Updated upstream
         # if a top was selected then set all the widget variables to display top things
 
         # if it is weather set all the widget variables to display weather things
 
+=======
+>>>>>>> Stashed changes
         # Open a new canvas that shows all the categories and asks which one you want to add
         self.editor = tk.Toplevel()
 
@@ -956,6 +964,128 @@ class WardrobeApp:
                 self.family_filter.select()
 
         # Show the Edit Weather Categories window
+        self.editor.mainloop()
+        print(self.edit_image_selection.get())
+
+    # Function that displays a new window to add filters to new top/bottom
+    def new_item_category_editor(self):
+
+        # Open a new canvas that shows all the categories and asks which one you want to add
+        self.editor = tk.Toplevel()
+
+        self.edit_image_selection = tk.StringVar()
+
+        # add title to window
+        self.editor.title("Edit Categories")
+
+        # change the size of the window
+        self.editor_canvas = tk.Canvas(self.editor, height=400, width=600)
+        self.editor_canvas.pack()
+
+        # Show the image of the selected item
+        # Set the frame
+        self.frame_image_edit = tk.Frame(self.editor, bg='#80c1ff')
+        self.frame_image_edit.place(relx=0.1, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
+
+        if self.image_type == 'top':
+            # Put the top image inside the frame (remember the image photo is saved in the original
+            # top_image_label.image
+            self.image_label = tk.Label(self.frame_image_edit, image=self.top_image_label.image)
+            # Save a reference so that tkinter doesnt doesn't send it to the garbage collector
+            # when the function closes (so the widget can still hold onto the image)
+            self.image_label.image = self.top_image_label.image
+
+        elif self.image_type == 'bottom':
+            # Put the bottom image inside the frame (remember the image photo is saved in the original
+            # bottom_image_label.image
+            self.image_label = tk.Label(self.frame_image_edit, image=self.bottom_image_label.image)
+            # Save a reference so that tkinter doesnt doesn't send it to the garbage collector
+            # when the function closes (so the widget can still hold onto the image)
+            self.image_label.image = self.bottom_image_label.image
+
+        # Place the image
+        self.image_label.place(x=0, y=0)
+
+        # Get the image name
+        if self.image_type == 'top':
+            image_name = self.master_tops_list[self.top_index]
+        elif self.image_type == 'bottom':
+            image_name = self.master_bottoms_list[self.bottom_index]
+
+        # Show the filters
+        self.frame_options_edit_weather = tk.Frame(self.editor)
+        self.frame_options_edit_weather.place(relx=0.5, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
+
+        self.frame_options_edit_occasion = tk.Frame(self.editor)
+        self.frame_options_edit_occasion.place(relx=0.7, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
+
+        # Weather filters
+        self.hot_selection = tk.IntVar()
+        self.warm_selection = tk.IntVar()
+        self.windy_selection = tk.IntVar()
+        self.rainy_selection = tk.IntVar()
+
+        self.hot_filter = tk.Checkbutton(self.frame_options_edit_weather, text="Hot", variable=self.hot_selection,
+                                         command=self.change_hot_filter)
+        self.hot_filter.pack(anchor='w')
+
+        self.warm_filter = tk.Checkbutton(self.frame_options_edit_weather, text="Warm", variable=self.warm_selection,
+                                          command=self.change_warm_filter)
+        self.warm_filter.pack(anchor='w')
+
+        self.windy_filter = tk.Checkbutton(self.frame_options_edit_weather, text="Cold and Windy",
+                                           variable=self.windy_selection, command=self.change_windy_filter)
+        self.windy_filter.pack(anchor='w')
+
+        self.rainy_filter = tk.Checkbutton(self.frame_options_edit_weather, text="Cold and Rainy",
+                                           variable=self.rainy_selection, command=self.change_rainy_filter)
+        self.rainy_filter.pack(anchor='w')
+
+        # Get the filters currently applied to that image
+        if 'hot' in image_name:
+            self.hot_filter.select()
+        if 'warm' in image_name:
+            self.warm_filter.select()
+        if 'windy' in image_name:
+            self.windy_filter.select()
+        if 'rainy' in image_name:
+            self.rainy_filter.select()
+
+        # Occasion filters
+        self.work_selection = tk.IntVar()
+        self.house_party_selection = tk.IntVar()
+        self.town_selection = tk.IntVar()
+        self.twenty_first_selection = tk.IntVar()
+        self.everyday_selection = tk.IntVar()
+        self.family_selection = tk.IntVar()
+
+        self.work_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="Work", variable=self.work_selection,
+                                          command=self.change_work_filter)
+        self.work_filter.pack(anchor='w')
+
+        self.house_party_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="House Party",
+                                                 variable=self.house_party_selection,
+                                                 command=self.change_house_party_filter)
+        self.house_party_filter.pack(anchor='w')
+
+        self.town_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="Town", variable=self.town_selection,
+                                          command=self.change_town_filter)
+        self.town_filter.pack(anchor='w')
+
+        self.twenty_first_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="21st",
+                                                  variable=self.twenty_first_selection,
+                                                  command=self.change_twenty_first_filter)
+        self.twenty_first_filter.pack(anchor='w')
+
+        self.everyday_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="Everyday",
+                                              variable=self.everyday_selection, command=self.change_everyday_filter)
+        self.everyday_filter.pack(anchor='w')
+
+        self.family_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="Family", variable=self.family_selection,
+                                            command=self.change_family_filter)
+        self.family_filter.pack(anchor='w')
+
+        # Show the Edit Categories window
         self.editor.mainloop()
         print(self.edit_image_selection.get())
 
@@ -1099,8 +1229,89 @@ class WardrobeApp:
         # reload the clothes
         self.load_wardrobe()
 
+<<<<<<< Updated upstream
 
     def new_bottom(self):
+=======
+    # Function called to add a new top to the wardrobe from within the app
+    def new_top(self):
+        # Set image_type to be a top so we know we are editing tops
+        self.image_type = 'top'
+        self.new_item()
+
+    # Function used to add a new top to the wardrobe from within the app
+    def new_bottom(self):
+        # Set image_type to be a bottom so we know we are editing bottoms
+        self.image_type = 'bottom'
+        self.new_item()
+
+    # Function used to add the item selected (called by new_top or new_bottom)
+    def new_item(self):
+        # Ask the user to select the top image from file explorer
+        item_path = filedialog.askopenfilename()
+        print(item_path)
+
+        if item_path == "":
+            return
+        else:
+
+            # Get the directory and the original image name
+            index = item_path.rfind("/")
+            directory = item_path[0:index + 1]  # including the /
+            original_name = item_path[index + 1:]  # including the extension
+            print(directory)
+
+            # Get the extension
+            name_list = item_path.split(".")
+            extension = name_list[1]
+
+            # Name the top to the topx where x is the total number of tops in the wardrobe including the addition
+            if self.image_type == "top":
+                new_name = "top" + str(len(self.all_tops) + 1) + "." + extension
+            elif self.image_type == "bottom":
+                new_name = "bottom" + str(len(self.all_bottoms) + 1) + "." + extension
+            print(new_name)
+
+            # Make a copy and move the file into the current wardrobe and rename it
+            shutil.copyfile(item_path, (self.file_path + "\\" + new_name))
+
+            # Load the image into the wardrobe
+            self.load_wardrobe()
+
+            # Show the photo as the current selection
+            if self.image_type == "top":
+                self.top_index = len(self.all_tops) - 1
+                self.update_photo(self.all_tops[self.top_index])
+
+                # Disable the next button because this is the last photo
+                self.button_next_top.config(state='disabled')
+
+                # Enable the previous button if the list is greater than 1
+                if len(self.all_tops) > 1:
+                    self.button_prev_top.config(state='normal')
+
+            elif self.image_type == "bottom":
+                self.bottom_index = len(self.all_bottoms) - 1
+                self.update_photo(self.all_bottoms[self.bottom_index])
+
+                # Disable the next button because this is the last photo
+                self.button_next_bottom.config(state='disabled')
+
+                # Enable the previous button if the list is greater than 1
+                if len(self.all_bottoms) > 1:
+                    self.button_prev_bottom.config(state='normal')
+
+            # Show the edit weather categories options to add weather categories
+            self.new_item_category_editor()
+
+            # load the wardrobe again
+            self.load_wardrobe()
+
+            # Show the edit occasion categories options to add occasion categories
+            # self.R2.select()
+            # self.R2.invoke()
+
+>>>>>>> Stashed changes
 
 '''
 Things for the future:
