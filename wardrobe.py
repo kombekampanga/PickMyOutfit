@@ -827,17 +827,26 @@ class WardrobeApp:
     # Function that displays a new window to edit filters
     def category_editor(self):
 
-        # Close the menu
-        self.edit_categories.place_forget()
+        # Close the menu if you are coming from edit_image_options function
+        try:
+            self.edit_categories.place_forget()
+        except AttributeError: # If you are adding a new top/bottom then edit_categories doesnt exist
+            pass
 
         # Open a new canvas that shows all the categories and asks which one you want to add
         self.editor = tk.Toplevel()
 
-        # add title to window
-        if self.edit_image_selection.get() == 'occasion':
-            self.editor.title("Edit Occasion Categories")
-        elif self.edit_image_selection.get() == 'weather':
-            self.editor.title("Edit Weather Categories")
+        # add title to window - If adding a new top/bottom then show all filters, otherwise choose weather/occasion
+        # depending on what the selected to edit
+        try:
+            selection = self.edit_image_selection.get()
+        except AttributeError: # If you are adding a new top/bottom then edit_image_selection doesnt exist
+            self.editor.title("Edit Categories")
+        else:
+            if self.edit_image_selection.get() == 'occasion':
+                self.editor.title("Edit Occasion Categories")
+            elif self.edit_image_selection.get() == 'weather':
+                self.editor.title("Edit Weather Categories")
 
         # change the size of the window
         self.editor_canvas = tk.Canvas(self.editor, height=400, width=600)
@@ -874,28 +883,37 @@ class WardrobeApp:
             image_name = self.master_bottoms_list[self.bottom_index]
 
         # Show the filters
-        self.frame_options_edit = tk.Frame(self.editor)
-        self.frame_options_edit.place(relx=0.5, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
+        # If you are adding a new top/bottom then display all the filters (in the except clause)
+        # If you are editing filters then only display the one you're editing (weather or occasion)
+        try:
+            selection = self.edit_image_selection.get()
+        except AttributeError: # If you are adding a new top/bottom then edit_image_selection doesnt exist
+            self.frame_options_edit_weather = tk.Frame(self.editor)
+            self.frame_options_edit_weather.place(relx=0.5, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
 
-        if self.edit_image_selection.get() == 'weather':
+            self.frame_options_edit_occasion = tk.Frame(self.editor)
+            self.frame_options_edit_occasion.place(relx=0.7, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
+
+            # Weather filters
             self.hot_selection = tk.IntVar()
             self.warm_selection = tk.IntVar()
             self.windy_selection = tk.IntVar()
             self.rainy_selection = tk.IntVar()
 
-            self.hot_filter = tk.Checkbutton(self.frame_options_edit, text="Hot", variable=self.hot_selection,
+            self.hot_filter = tk.Checkbutton(self.frame_options_edit_weather, text="Hot", variable=self.hot_selection,
                                              command=self.change_hot_filter)
             self.hot_filter.pack(anchor='w')
 
-            self.warm_filter = tk.Checkbutton(self.frame_options_edit, text="Warm", variable=self.warm_selection,
+            self.warm_filter = tk.Checkbutton(self.frame_options_edit_weather, text="Warm",
+                                              variable=self.warm_selection,
                                               command=self.change_warm_filter)
             self.warm_filter.pack(anchor='w')
 
-            self.windy_filter = tk.Checkbutton(self.frame_options_edit, text="Cold and Windy",
+            self.windy_filter = tk.Checkbutton(self.frame_options_edit_weather, text="Cold and Windy",
                                                variable=self.windy_selection, command=self.change_windy_filter)
             self.windy_filter.pack(anchor='w')
 
-            self.rainy_filter = tk.Checkbutton(self.frame_options_edit, text="Cold and Rainy",
+            self.rainy_filter = tk.Checkbutton(self.frame_options_edit_weather, text="Cold and Rainy",
                                                variable=self.rainy_selection, command=self.change_rainy_filter)
             self.rainy_filter.pack(anchor='w')
 
@@ -909,7 +927,7 @@ class WardrobeApp:
             if 'rainy' in image_name:
                 self.rainy_filter.select()
 
-        elif self.edit_image_selection.get() == 'occasion':
+            # Occasion filters
             self.work_selection = tk.IntVar()
             self.house_party_selection = tk.IntVar()
             self.town_selection = tk.IntVar()
@@ -917,45 +935,118 @@ class WardrobeApp:
             self.everyday_selection = tk.IntVar()
             self.family_selection = tk.IntVar()
 
-            self.work_filter = tk.Checkbutton(self.frame_options_edit, text="Work", variable=self.work_selection,
+            self.work_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="Work",
+                                              variable=self.work_selection,
                                               command=self.change_work_filter)
             self.work_filter.pack(anchor='w')
 
-            self.house_party_filter = tk.Checkbutton(self.frame_options_edit, text="House Party",
+            self.house_party_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="House Party",
                                                      variable=self.house_party_selection,
                                                      command=self.change_house_party_filter)
             self.house_party_filter.pack(anchor='w')
 
-            self.town_filter = tk.Checkbutton(self.frame_options_edit, text="Town", variable=self.town_selection,
+            self.town_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="Town",
+                                              variable=self.town_selection,
                                               command=self.change_town_filter)
             self.town_filter.pack(anchor='w')
 
-            self.twenty_first_filter = tk.Checkbutton(self.frame_options_edit, text="21st",
+            self.twenty_first_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="21st",
                                                       variable=self.twenty_first_selection,
                                                       command=self.change_twenty_first_filter)
             self.twenty_first_filter.pack(anchor='w')
 
-            self.everyday_filter = tk.Checkbutton(self.frame_options_edit, text="Everyday",
+            self.everyday_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="Everyday",
                                                   variable=self.everyday_selection, command=self.change_everyday_filter)
             self.everyday_filter.pack(anchor='w')
 
-            self.family_filter = tk.Checkbutton(self.frame_options_edit, text="Family", variable=self.family_selection,
+            self.family_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="Family",
+                                                variable=self.family_selection,
                                                 command=self.change_family_filter)
             self.family_filter.pack(anchor='w')
 
-            # Get the filters currently applied to that image
-            if 'work' in image_name:
-                self.work_filter.select()
-            if 'house party' in image_name:
-                self.house_party_filter.select()
-            if 'town' in image_name:
-                self.town_filter.select()
-            if '21st' in image_name:
-                self.twenty_first_filter.select()
-            if 'everyday' in image_name:
-                self.everyday_filter.select()
-            if 'family' in image_name:
-                self.family_filter.select()
+        else:
+            self.frame_options_edit = tk.Frame(self.editor)
+            self.frame_options_edit.place(relx=0.5, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
+
+            if self.edit_image_selection.get() == 'weather':
+                self.hot_selection = tk.IntVar()
+                self.warm_selection = tk.IntVar()
+                self.windy_selection = tk.IntVar()
+                self.rainy_selection = tk.IntVar()
+
+                self.hot_filter = tk.Checkbutton(self.frame_options_edit, text="Hot", variable=self.hot_selection,
+                                                 command=self.change_hot_filter)
+                self.hot_filter.pack(anchor='w')
+
+                self.warm_filter = tk.Checkbutton(self.frame_options_edit, text="Warm", variable=self.warm_selection,
+                                                  command=self.change_warm_filter)
+                self.warm_filter.pack(anchor='w')
+
+                self.windy_filter = tk.Checkbutton(self.frame_options_edit, text="Cold and Windy",
+                                                   variable=self.windy_selection, command=self.change_windy_filter)
+                self.windy_filter.pack(anchor='w')
+
+                self.rainy_filter = tk.Checkbutton(self.frame_options_edit, text="Cold and Rainy",
+                                                   variable=self.rainy_selection, command=self.change_rainy_filter)
+                self.rainy_filter.pack(anchor='w')
+
+                # Get the filters currently applied to that image
+                if 'hot' in image_name:
+                    self.hot_filter.select()
+                if 'warm' in image_name:
+                    self.warm_filter.select()
+                if 'windy' in image_name:
+                    self.windy_filter.select()
+                if 'rainy' in image_name:
+                    self.rainy_filter.select()
+
+            elif self.edit_image_selection.get() == 'occasion':
+                self.work_selection = tk.IntVar()
+                self.house_party_selection = tk.IntVar()
+                self.town_selection = tk.IntVar()
+                self.twenty_first_selection = tk.IntVar()
+                self.everyday_selection = tk.IntVar()
+                self.family_selection = tk.IntVar()
+
+                self.work_filter = tk.Checkbutton(self.frame_options_edit, text="Work", variable=self.work_selection,
+                                                  command=self.change_work_filter)
+                self.work_filter.pack(anchor='w')
+
+                self.house_party_filter = tk.Checkbutton(self.frame_options_edit, text="House Party",
+                                                         variable=self.house_party_selection,
+                                                         command=self.change_house_party_filter)
+                self.house_party_filter.pack(anchor='w')
+
+                self.town_filter = tk.Checkbutton(self.frame_options_edit, text="Town", variable=self.town_selection,
+                                                  command=self.change_town_filter)
+                self.town_filter.pack(anchor='w')
+
+                self.twenty_first_filter = tk.Checkbutton(self.frame_options_edit, text="21st",
+                                                          variable=self.twenty_first_selection,
+                                                          command=self.change_twenty_first_filter)
+                self.twenty_first_filter.pack(anchor='w')
+
+                self.everyday_filter = tk.Checkbutton(self.frame_options_edit, text="Everyday",
+                                                      variable=self.everyday_selection, command=self.change_everyday_filter)
+                self.everyday_filter.pack(anchor='w')
+
+                self.family_filter = tk.Checkbutton(self.frame_options_edit, text="Family", variable=self.family_selection,
+                                                    command=self.change_family_filter)
+                self.family_filter.pack(anchor='w')
+
+                # Get the filters currently applied to that image
+                if 'work' in image_name:
+                    self.work_filter.select()
+                if 'house party' in image_name:
+                    self.house_party_filter.select()
+                if 'town' in image_name:
+                    self.town_filter.select()
+                if '21st' in image_name:
+                    self.twenty_first_filter.select()
+                if 'everyday' in image_name:
+                    self.everyday_filter.select()
+                if 'family' in image_name:
+                    self.family_filter.select()
 
         # Add a save button
         self.save_button = tk.Button(self.editor, text="Save", bg='light blue', command=self.close_editor)
@@ -965,132 +1056,7 @@ class WardrobeApp:
         self.editor.mainloop()
         print(self.edit_image_selection.get())
 
-    # Function that displays a new window to add filters to new top/bottom
-    def new_item_category_editor(self):
-
-        # Open a new canvas that shows all the categories and asks which one you want to add
-        self.editor = tk.Toplevel()
-
-        self.edit_image_selection = tk.StringVar()
-
-        # add title to window
-        self.editor.title("Edit Categories")
-
-        # change the size of the window
-        self.editor_canvas = tk.Canvas(self.editor, height=400, width=600)
-        self.editor_canvas.pack()
-
-        # Show the image of the selected item
-        # Set the frame
-        self.frame_image_edit = tk.Frame(self.editor, bg='#80c1ff')
-        self.frame_image_edit.place(relx=0.1, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
-
-        if self.image_type == 'top':
-            # Put the top image inside the frame (remember the image photo is saved in the original
-            # top_image_label.image
-            self.image_label = tk.Label(self.frame_image_edit, image=self.top_image_label.image)
-            # Save a reference so that tkinter doesnt doesn't send it to the garbage collector
-            # when the function closes (so the widget can still hold onto the image)
-            self.image_label.image = self.top_image_label.image
-
-        elif self.image_type == 'bottom':
-            # Put the bottom image inside the frame (remember the image photo is saved in the original
-            # bottom_image_label.image
-            self.image_label = tk.Label(self.frame_image_edit, image=self.bottom_image_label.image)
-            # Save a reference so that tkinter doesnt doesn't send it to the garbage collector
-            # when the function closes (so the widget can still hold onto the image)
-            self.image_label.image = self.bottom_image_label.image
-
-        # Place the image
-        self.image_label.place(x=0, y=0)
-
-        # Get the image name
-        if self.image_type == 'top':
-            image_name = self.master_tops_list[self.top_index]
-        elif self.image_type == 'bottom':
-            image_name = self.master_bottoms_list[self.bottom_index]
-
-        # Show the filters
-        self.frame_options_edit_weather = tk.Frame(self.editor)
-        self.frame_options_edit_weather.place(relx=0.5, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
-
-        self.frame_options_edit_occasion = tk.Frame(self.editor)
-        self.frame_options_edit_occasion.place(relx=0.7, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
-
-        # Weather filters
-        self.hot_selection = tk.IntVar()
-        self.warm_selection = tk.IntVar()
-        self.windy_selection = tk.IntVar()
-        self.rainy_selection = tk.IntVar()
-
-        self.hot_filter = tk.Checkbutton(self.frame_options_edit_weather, text="Hot", variable=self.hot_selection,
-                                         command=self.change_hot_filter)
-        self.hot_filter.pack(anchor='w')
-
-        self.warm_filter = tk.Checkbutton(self.frame_options_edit_weather, text="Warm", variable=self.warm_selection,
-                                          command=self.change_warm_filter)
-        self.warm_filter.pack(anchor='w')
-
-        self.windy_filter = tk.Checkbutton(self.frame_options_edit_weather, text="Cold and Windy",
-                                           variable=self.windy_selection, command=self.change_windy_filter)
-        self.windy_filter.pack(anchor='w')
-
-        self.rainy_filter = tk.Checkbutton(self.frame_options_edit_weather, text="Cold and Rainy",
-                                           variable=self.rainy_selection, command=self.change_rainy_filter)
-        self.rainy_filter.pack(anchor='w')
-
-        # Get the filters currently applied to that image
-        if 'hot' in image_name:
-            self.hot_filter.select()
-        if 'warm' in image_name:
-            self.warm_filter.select()
-        if 'windy' in image_name:
-            self.windy_filter.select()
-        if 'rainy' in image_name:
-            self.rainy_filter.select()
-
-        # Occasion filters
-        self.work_selection = tk.IntVar()
-        self.house_party_selection = tk.IntVar()
-        self.town_selection = tk.IntVar()
-        self.twenty_first_selection = tk.IntVar()
-        self.everyday_selection = tk.IntVar()
-        self.family_selection = tk.IntVar()
-
-        self.work_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="Work", variable=self.work_selection,
-                                          command=self.change_work_filter)
-        self.work_filter.pack(anchor='w')
-
-        self.house_party_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="House Party",
-                                                 variable=self.house_party_selection,
-                                                 command=self.change_house_party_filter)
-        self.house_party_filter.pack(anchor='w')
-
-        self.town_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="Town", variable=self.town_selection,
-                                          command=self.change_town_filter)
-        self.town_filter.pack(anchor='w')
-
-        self.twenty_first_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="21st",
-                                                  variable=self.twenty_first_selection,
-                                                  command=self.change_twenty_first_filter)
-        self.twenty_first_filter.pack(anchor='w')
-
-        self.everyday_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="Everyday",
-                                              variable=self.everyday_selection, command=self.change_everyday_filter)
-        self.everyday_filter.pack(anchor='w')
-
-        self.family_filter = tk.Checkbutton(self.frame_options_edit_occasion, text="Family", variable=self.family_selection,
-                                            command=self.change_family_filter)
-        self.family_filter.pack(anchor='w')
-
-        # Add a save button
-        self.save_button = tk.Button(self.editor, text="Save", bg='light blue', command=self.close_editor)
-        self.save_button.place(relx=0.7, rely=0.8, relwidth=0.1, relheight=0.075)
-
-        # Show the Edit Categories window
-        self.editor.mainloop()
-        print(self.edit_image_selection.get())
-
+        
     # Function called when save button is pressed that closes the editor (new_item_category_editor and category
     # editor functions)
     def close_editor(self):
@@ -1305,7 +1271,7 @@ class WardrobeApp:
                     self.button_prev_bottom.config(state='normal')
 
             # Show the edit weather categories options to add weather categories
-            self.new_item_category_editor()
+            self.category_editor()
 
             # load the wardrobe again
             self.load_wardrobe()
