@@ -65,8 +65,192 @@ FRAME_HEIGHT = WINDOW_HEIGHT * 0.3
 PERCENTAGE_EITHER_SIDE_OF_FRAME = 0.35
 
 
-# Wardrobe class that contains the window for the clothes to be displayed
+# WardrobeApp class that contains the window for the clothes to be displayed with all the buttons
 class WardrobeApp:
+    # Wardrobe class that contains the clothes and categories
+    class MyWardrobe:
+        def __init__(self):
+
+            # Create list of weather categories
+            self.weather_categories = ['Show All', 'Hot', 'Warm', 'Cold and Windy', 'Cold and Rainy']
+            # Create list of occasion categories
+            self.occasion_categories = ['Show All', 'Work', 'House Party', 'Town', '21st', 'Everyday', 'Family']
+
+            # Create lists containing images for different categories
+            self.all_clothes = []
+            self.all_tops = []
+            self.all_bottoms = []
+            # Master lists - these will be updated in the program (when weather and/or occasions are selected)
+            # and used in the create_photo function to display the appropriate pictures
+            self.master_tops_list = []
+            self.master_bottoms_list = []
+            # Initialise weather category lists
+            self.weather_tops_list = []
+            self.weather_bottoms_list = []
+
+            self.hot_tops = []
+            self.hot_bottoms = []
+
+            self.warm_tops = []
+            self.warm_bottoms = []
+
+            self.windy_tops = []
+            self.windy_bottoms = []
+
+            self.rainy_tops = []
+            self.rainy_bottoms = []
+
+            # Initialise occasion category lists
+            self.occasion_tops_list = []
+            self.occasion_bottoms_list = []
+
+            self.work_tops = []
+            self.work_bottoms = []
+
+            self.house_party_tops = []
+            self.house_party_bottoms = []
+
+            self.town_tops = []
+            self.town_bottoms = []
+
+            self.twenty_first_tops = []
+            self.twenty_first_bottoms = []
+
+            self.everyday_tops = []
+            self.everyday_bottoms = []
+
+            self.family_tops = []
+            self.family_bottoms = []
+
+        # function to load the initial wardrobe into the program (change the file path)
+        def load_wardrobe(self, file_path):
+            """'
+            # Open file explore to get the user to choose the folder that contains the clothing
+            new_file_path = filedialog.askdirectory()
+
+            # Get all the clothes from the folder - check if a file path was chosen
+            try:
+                self.all_clothes = os.listdir(new_file_path)
+            # if no path was chosen
+            except FileNotFoundError:
+                # keep asking until a path is chosen
+                error = FileNotFoundError
+                # using this while loop because if the program is first starting then we want it to asking until a path
+                # is chosen. But if they are loading a new wardrobe and they change their mind, they can still use the old
+                # file path saved in self.file_path
+                while new_file_path == '' and self.file_path == '':
+                    new_file_path = filedialog.askdirectory()
+                    if new_file_path != '':
+                        self.file_path = new_file_path
+
+                self.all_clothes = os.listdir(self.file_path)
+            """
+            # Get all the clothes from the folder
+            self.all_clothes = os.listdir(file_path)
+            # Get all the tops from the tops folder
+            # Empty the tops list first
+            self.all_tops = []
+            for item in self.all_clothes:
+                if 'top' in item:
+                    self.all_tops.append(item)
+
+            # Get all the bottoms from the bottoms folder
+            # Empty the bottoms list first
+            self.all_bottoms = []
+            for item in self.all_clothes:
+                if 'bottom' in item:
+                    self.all_bottoms.append(item)
+
+            # To begin with these will show all the tops and bottoms because no weather/occasion selection has been made
+            self.master_tops_list = self.all_tops
+            self.master_bottoms_list = self.all_bottoms
+
+            # Empty the category lists
+            self.hot_tops = []
+            self.hot_bottoms = []
+
+            self.warm_tops = []
+            self.warm_bottoms = []
+
+            self.windy_tops = []
+            self.windy_bottoms = []
+
+            self.rainy_tops = []
+            self.rainy_bottoms = []
+
+            self.occasion_tops_list = []
+            self.occasion_bottoms_list = []
+
+            self.work_tops = []
+            self.work_bottoms = []
+
+            self.house_party_tops = []
+            self.house_party_bottoms = []
+
+            self.town_tops = []
+            self.town_bottoms = []
+
+            self.twenty_first_tops = []
+            self.twenty_first_bottoms = []
+
+            self.everyday_tops = []
+            self.everyday_bottoms = []
+
+            self.family_tops = []
+            self.family_bottoms = []
+
+            # check the weather category listed in the top names and add it to the appropriate lists
+            for image_title in self.all_tops:
+                if 'hot' in image_title:
+                    self.hot_tops.append(image_title)
+                if 'warm' in image_title:
+                    self.warm_tops.append(image_title)
+                if 'windy' in image_title:
+                    self.windy_tops.append(image_title)
+                if 'rainy' in image_title:
+                    self.rainy_tops.append(image_title)
+
+            # check the weather category listed in the bottom names and add it to the appropriate lists
+            for image_title in self.all_bottoms:
+                if 'hot' in image_title:
+                    self.hot_bottoms.append(image_title)
+                if 'warm' in image_title:
+                    self.warm_bottoms.append(image_title)
+                if 'windy' in image_title:
+                    self.windy_bottoms.append(image_title)
+                if 'rainy' in image_title:
+                    self.rainy_bottoms.append(image_title)
+
+            # check the occasion category listed in the top names and add it to the appropriate lists
+            for image_title in self.all_tops:
+                if 'work' in image_title:
+                    self.work_tops.append(image_title)
+                if 'house party' in image_title:
+                    self.house_party_tops.append(image_title)
+                if 'town' in image_title:
+                    self.town_tops.append(image_title)
+                if '21st' in image_title:
+                    self.twenty_first_tops.append(image_title)
+                if 'everyday' in image_title:
+                    self.everyday_tops.append(image_title)
+                if 'family' in image_title:
+                    self.family_tops.append(image_title)
+
+            # check the occasion category listed in the bottom names and add it to the appropriate lists
+            for image_title in self.all_bottoms:
+                if 'work' in image_title:
+                    self.work_bottoms.append(image_title)
+                if 'house party' in image_title:
+                    self.house_party_bottoms.append(image_title)
+                if 'town' in image_title:
+                    self.town_bottoms.append(image_title)
+                if '21st' in image_title:
+                    self.twenty_first_bottoms.append(image_title)
+                if 'everyday' in image_title:
+                    self.everyday_bottoms.append(image_title)
+                if 'family' in image_title:
+                    self.family_bottoms.append(image_title)
+
     def __init__(self, root):
         # Create a variable to store whether its a top or bottom
         self.image_type = tk.StringVar()
@@ -74,59 +258,60 @@ class WardrobeApp:
         # make the wardrobe window/GUI
         self.root = root
 
+        # create a canvas to specify the size of the window
+        self.canvas = tk.Canvas(self.root, height=WINDOW_HEIGHT, width=WINDOW_WIDTH)
+
+        # Create a frame to display the tops
+        self.frame_top = tk.Frame(self.root, bg='#80c1ff')
+
+        # create a frame to display bottoms
+        self.frame_bottom = tk.Frame(self.root, bg='#80c1ff')
+
         # Create the file path for the images
         self.file_path = ''
 
-        # Create list of weather categories
-        self.weather_categories = ['Show All', 'Hot', 'Warm', 'Cold and Windy', 'Cold and Rainy']
-        # Create list of occasion categories
-        self.occasion_categories = ['Show All', 'Work', 'House Party', 'Town', '21st', 'Everyday', 'Family']
+        # buttons to cycle through tops (previous and next)
+        self.button_prev_top = tk.Button(self.root, text="Prev", bg='pink', command=self.top_prev_photo)
+        self.button_next_top = tk.Button(self.root, text="Next", bg='pink', command=self.top_next_photo)
 
-        # Create lists containing images for different categories
-        self.all_clothes = []
-        self.all_tops = []
-        self.all_bottoms = []
-        # Master lists - these will be updated in the program (when weather and/or occasions are selected)
-        # and used in the create_photo function to display the appropriate pictures
-        self.master_tops_list = []
-        self.master_bottoms_list = []
-        # Initialise weather category lists
-        self.weather_tops_list = []
-        self.weather_bottoms_list = []
+        # buttons to cycle through bottoms (previous and next)
+        self.button_prev_bottom = tk.Button(self.root, text="Prev", bg="#BDA0CB", command=self.bottom_prev_photo)
+        self.button_next_bottom = tk.Button(self.root, text="Next", bg='#BDA0CB', command=self.bottom_next_photo)
 
-        self.hot_tops = []
-        self.hot_bottoms = []
+        # Random outfit button
+        self.button_random_outfit = tk.Button(self.root, text="Random Outfit", bg='light green',
+                                              command=self.random_outfit)
 
-        self.warm_tops = []
-        self.warm_bottoms = []
+        # Create label for the tops area
+        self.label_top = tk.Label(self.frame_top, text="Tops", bg='white')
 
-        self.windy_tops = []
-        self.windy_bottoms = []
+        # Create label for the bottoms area
+        self.label_bottom = tk.Label(self.frame_bottom, text="Bottoms", bg='white')
 
-        self.rainy_tops = []
-        self.rainy_bottoms = []
+        # Create a drop down menu to select the weather:
+        # ------------------------------------------------------------------
+        # Create a main weather menu button that displays weather options when clicked
+        self.weather_menubutton = tk.Menubutton(self.root, text="Weather", bg='light blue')
+        # Create a menu to list all the weather options (tear off = 0 removes a weird line at the top)
+        # and attach it to the weather menu button
+        self.weather_menu = tk.Menu(self.weather_menubutton, tearoff=0)
 
-        # Initialise occasion category lists
-        self.occasion_tops_list = []
-        self.occasion_bottoms_list = []
+        # Create an drop down menu to select the occasion:
+        # -------------------------------------------------------------------
+        # Create a main occasion menu button that displays weather options when clicked
+        self.occasion_menubutton = tk.Menubutton(self.root, text="Occasion", bg='light yellow')
+        # Create a menu to list all the occasion options (tear off = 0 removes a weird line at the top)
+        # and attach it to the occasion menu button
+        self.occasion_menu = tk.Menu(self.occasion_menubutton, tearoff=0)
 
-        self.work_tops = []
-        self.work_bottoms = []
-
-        self.house_party_tops = []
-        self.house_party_bottoms = []
-
-        self.town_tops = []
-        self.town_bottoms = []
-
-        self.twenty_first_tops = []
-        self.twenty_first_bottoms = []
-
-        self.everyday_tops = []
-        self.everyday_bottoms = []
-
-        self.family_tops = []
-        self.family_bottoms = []
+        # Create menu bar:
+        # --------------------------------------------------------------------
+        # Create a menu bar that appears at the top right hand corner
+        self.menubar = tk.Menu(self.root)
+        # Create "file" menu that appears in the top right hand corner (in the menu bar)
+        self.file = tk.Menu(self.menubar, tearoff=0)
+        # Create "Edit" menu that appears next to "file"
+        self.edit = tk.Menu(self.menubar, tearoff=0)
 
         # create variables to hold which radio button is selected (to track which option is selected)
         # These variables hold the "label" text for each radio button, so its updated based on which one is clicked
@@ -137,23 +322,31 @@ class WardrobeApp:
         self.top_image_label = tk.Label()
         self.bottom_image_label = tk.Label()
 
+        # Editing an images categories
+        # ------------------------------------------------------------------------------------------
+        # Create "edit_categories" menu that appears when you right click
+        self.edit_categories = tk.Canvas(self.root, width=150, height=50, highlightbackground="gray",
+                                         highlightthickness=1)
+        # Create variables to hold which edit function is selected (edit weather or edit category)
+        self.edit_image_selection = tk.StringVar()
+
+        # Create Radio buttons that open the category editor
+        self.R1 = tk.Radiobutton(self.edit_categories, text="Edit Weather Filters", variable=self.edit_image_selection,
+                                 value='weather', indicator=0, command=self.category_editor)
+
+        self.R2 = tk.Radiobutton(self.edit_categories, text="Edit Occasion Filters", variable=self.edit_image_selection,
+                                 value='occasion', indicator=0, command=self.category_editor)
+
         # Index numbers to keep track of which top/bottom item we are looking at
         # So when we click next and previous we can move through the items
         self.bottom_index = 0
         self.top_index = 0
 
-        # Create the details for the window
-        self.create_frame()
-        self.create_buttons()
-        # self.CreateLabels()
-        self.create_menu_buttons()
-        self.create_menubar()
-
         # Load clothes into the wardrobe
 
         # First check if another wardrobe was loaded last time (if Directory (DO NOT EDIT).txt exists)
         try:
-            with open('Directory (DO NOT EDIT.txt', 'r') as f:
+            with open('Directory (DO NOT EDIT).txt', 'r') as f:
                 # if it exists then get the file path from there
                 self.file_path = f.read()
 
@@ -173,16 +366,26 @@ class WardrobeApp:
             # When they select a folder then the while loop will stop
             # Then write a file called "Directory (DO NOT EDIT).txt", save the file path in it and save it to the
             # Working directory
-            with open('Directory (DO NOT EDIT.txt', "w") as f:
+            with open('Directory (DO NOT EDIT).txt', "w") as f:
                 f.write(self.file_path)
 
-        # Load a the wardrobe
-        self.load_wardrobe()
+        # Create a wardrobe full of clothes
+        self.mywardrobe = WardrobeApp.MyWardrobe()
+
+        # Load the wardrobe
+        self.mywardrobe.load_wardrobe(self.file_path)
 
         # Upload the initial top and the bottom picture into the frame (indices initially = 0)
         if self.file_path != '':
-            self.create_photo(self.master_tops_list[self.top_index])
-            self.create_photo(self.master_bottoms_list[self.bottom_index])
+            self.create_photo(self.mywardrobe.master_tops_list[self.top_index])
+            self.create_photo(self.mywardrobe.master_bottoms_list[self.bottom_index])
+
+        # Create the details for the window
+        self.create_frame()
+        self.create_buttons()
+        # self.CreateLabels()
+        self.create_menu_buttons()
+        self.create_menubar()
 
         # self.edit_categories.menu = tk.Canvas()
         # When you right click the image you are able to edit the categories
@@ -192,67 +395,52 @@ class WardrobeApp:
         self.canvas.bind("<Button-1>", self.left_clicked)
         self.canvas.bind("<Button-1>", self.left_clicked)
 
+    # Function to create the frames that display the tops and the bottoms
     def create_frame(self):
         # add title to window
         self.root.title(WINDOW_TITLE)
-        # change the size of the window
-        # self.root.geometry('{0}x{1}'.format(WINDOW_WIDTH, WINDOW_HEIGHT))
-        self.canvas = tk.Canvas(self.root, height=WINDOW_HEIGHT, width=WINDOW_WIDTH)
+
+        # Put the canvas onto the frame
         self.canvas.pack()
 
-        # create a frame for the tops
-        self.frame_top = tk.Frame(self.root, bg='#80c1ff')
+        # Place the frame for the tops
         self.frame_top.place(relx=PERCENTAGE_EITHER_SIDE_OF_FRAME, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
 
-        # create a frame for the bottoms
-        self.frame_bottom = tk.Frame(self.root, bg='#80c1ff')
+        # Place the frame for the bottoms
         self.frame_bottom.place(relx=PERCENTAGE_EITHER_SIDE_OF_FRAME, rely=0.5, width=FRAME_WIDTH, height=FRAME_HEIGHT)
 
+    # Function to create a previous and next buttons for each item and add them to the root
     def create_buttons(self):
-        # create a previous and next buttons for each item and add them to the root
 
-        # buttons for tops
-        self.button_prev_top = tk.Button(self.root, text="Prev", bg='pink', command=self.top_prev_photo)
+        # Place the previous and next buttons for the tops in the frame to cycle through tops
         # Previous button should start off being disabled since the very first image is shown at the start
         self.button_prev_top.config(state='disabled')
         self.button_prev_top.place(relx=0.25, rely=0.25, relwidth=0.08, relheight=0.05)
 
-        self.button_next_top = tk.Button(self.root, text="Next", bg='pink', command=self.top_next_photo)
         self.button_next_top.place(relx=0.67, rely=0.25, relwidth=0.08, relheight=0.05)
 
-        # buttons for bottoms
-        self.button_prev_bottom = tk.Button(self.root, text="Prev", bg="#BDA0CB", command=self.bottom_prev_photo)
-
+        # Place the previous and next buttons for the bottoms in the frame to cycle through bottoms
         # Previous button should start off being disabled since the very first image is shown at the start
         self.button_prev_bottom.config(state='disabled')
         self.button_prev_bottom.place(relx=0.25, rely=0.65, relwidth=0.08, relheight=0.05)
 
-        self.button_next_bottom = tk.Button(self.root, text="Next", bg='#BDA0CB', command=self.bottom_next_photo)
         self.button_next_bottom.place(relx=0.67, rely=0.65, relwidth=0.08, relheight=0.05)
 
-        # Random outfit button
-        self.button_random_outfit = tk.Button(self.root, text="Random Outfit", bg='light green',
-                                              command=self.random_outfit)
+        # Place the random outfit button in the frame
         self.button_random_outfit.place(relx=0.05, rely=0.05)
 
     def create_labels(self):
-        # Create label for the tops area
-        self.label_top = tk.Label(self.frame_top, text="Tops", bg='white')
+        # Place label for tops area
         self.label_top.place(relx=0.3, rely=0.02, relwidth=0.4, height=0.1)
 
-        # Create label for the tops area
-        self.label_bottom = tk.Label(self.frame_bottom, text="Bottoms", bg='white')
+        # Place label for bottoms area
         self.label_bottom.place(relx=0.3, rely=0.02, relwidth=0.4, relheight=0.1)
 
     def create_menu_buttons(self):
-        # Create a drop down menu to select the weather
-        # Create a main weather menu button that displays weather options when clicked
-        self.weather_menubutton = tk.Menubutton(self.root, text="Weather", bg='light blue')
-        # Create a menu to list all the weather options (tear off = 0 removes a weird line at the top)
-        # and attach it to the weather menu button
-        self.weather_menu = tk.Menu(self.weather_menubutton, tearoff=0)
-        # Add the weather options
-        for category in self.weather_categories:
+
+        # Add the weather options to the weather drop-down menu
+        print(self.mywardrobe)
+        for category in self.mywardrobe.weather_categories:
             self.weather_menu.add_radiobutton(label=category, variable=self.weather_selection,
                                               command=self.weather_selected)
 
@@ -261,14 +449,8 @@ class WardrobeApp:
         # Place weather menu button on the root
         self.weather_menubutton.place(relx=0.05, rely=0.2)
 
-        # Create an drop down menu to select the occasion
-        # Create a main occasion menu button that displays weather options when clicked
-        self.occasion_menubutton = tk.Menubutton(self.root, text="Occasion", bg='light yellow')
-        # Create a menu to list all the occasion options (tear off = 0 removes a weird line at the top)
-        # and attach it to the occasion menu button
-        self.occasion_menu = tk.Menu(self.occasion_menubutton, tearoff=0)
-        # Add the occasion options
-        for category in self.occasion_categories:
+        # Add the occasion options to the occasion drop-down menu
+        for category in self.mywardrobe.occasion_categories:
             self.occasion_menu.add_radiobutton(label=category, variable=self.occasion_selection,
                                                command=self.occasion_selected)
 
@@ -278,10 +460,6 @@ class WardrobeApp:
         self.occasion_menubutton.place(relx=0.05, rely=0.3)
 
     def create_menubar(self):
-        # Create a menu bar that appears at the top right hand corner
-        self.menubar = tk.Menu(self.root)
-        # Create "file" menu that appears in the top right hand corner (in the menu bar)
-        self.file = tk.Menu(self.menubar, tearoff=0)
         # Attach file to the menu bar
         self.menubar.add_cascade(label="File", menu=self.file)
         # Add the "Load Wardrobe" option
@@ -289,9 +467,7 @@ class WardrobeApp:
         # Add the "Exit" option
         self.file.add_command(label="Exit", command=self.root.destroy)
 
-        # Create "Edit" menu that appears next to "file"
-        self.edit = tk.Menu(self.menubar, tearoff=0)
-        # Attach edit to the menu bar
+        # Attach edit menu to the menu bar
         self.menubar.add_cascade(label="Edit", menu=self.edit)
 
         # Add the "Add New Top" option
@@ -300,135 +476,6 @@ class WardrobeApp:
         self.edit.add_command(label="Add New Bottom", command=self.new_bottom)
 
         self.root.config(menu=self.menubar)
-
-    # function to load the initial wardrobe into the program (change the file path)
-    def load_wardrobe(self):
-        """'
-        # Open file explore to get the user to choose the folder that contains the clothing
-        new_file_path = filedialog.askdirectory()
-
-        # Get all the clothes from the folder - check if a file path was chosen
-        try:
-            self.all_clothes = os.listdir(new_file_path)
-        # if no path was chosen
-        except FileNotFoundError:
-            # keep asking until a path is chosen
-            error = FileNotFoundError
-            # using this while loop because if the program is first starting then we want it to asking until a path
-            # is chosen. But if they are loading a new wardrobe and they change their mind, they can still use the old
-            # file path saved in self.file_path
-            while new_file_path == '' and self.file_path == '':
-                new_file_path = filedialog.askdirectory()
-                if new_file_path != '':
-                    self.file_path = new_file_path
-
-            self.all_clothes = os.listdir(self.file_path)
-        """
-        # Get all the clothes from the folder
-        self.all_clothes = os.listdir(self.file_path)
-        # Get all the tops from the tops folder
-        # Empty the tops list first
-        self.all_tops = []
-        for item in self.all_clothes:
-            if 'top' in item:
-                self.all_tops.append(item)
-
-        # Get all the bottoms from the bottoms folder
-        # Empty the bottoms list first
-        self.all_bottoms = []
-        for item in self.all_clothes:
-            if 'bottom' in item:
-                self.all_bottoms.append(item)
-
-        # To begin with these will show all the tops and bottoms because no weather/occasion selection has been made
-        self.master_tops_list = self.all_tops
-        self.master_bottoms_list = self.all_bottoms
-
-        # Empty the category lists
-        self.hot_tops = []
-        self.hot_bottoms = []
-
-        self.warm_tops = []
-        self.warm_bottoms = []
-
-        self.windy_tops = []
-        self.windy_bottoms = []
-
-        self.rainy_tops = []
-        self.rainy_bottoms = []
-
-        self.occasion_tops_list = []
-        self.occasion_bottoms_list = []
-
-        self.work_tops = []
-        self.work_bottoms = []
-
-        self.house_party_tops = []
-        self.house_party_bottoms = []
-
-        self.town_tops = []
-        self.town_bottoms = []
-
-        self.twenty_first_tops = []
-        self.twenty_first_bottoms = []
-
-        self.everyday_tops = []
-        self.everyday_bottoms = []
-
-        self.family_tops = []
-        self.family_bottoms = []
-
-        # check the weather category listed in the top names and add it to the appropriate lists
-        for image_title in self.all_tops:
-            if 'hot' in image_title:
-                self.hot_tops.append(image_title)
-            if 'warm' in image_title:
-                self.warm_tops.append(image_title)
-            if 'windy' in image_title:
-                self.windy_tops.append(image_title)
-            if 'rainy' in image_title:
-                self.rainy_tops.append(image_title)
-
-        # check the weather category listed in the bottom names and add it to the appropriate lists
-        for image_title in self.all_bottoms:
-            if 'hot' in image_title:
-                self.hot_bottoms.append(image_title)
-            if 'warm' in image_title:
-                self.warm_bottoms.append(image_title)
-            if 'windy' in image_title:
-                self.windy_bottoms.append(image_title)
-            if 'rainy' in image_title:
-                self.rainy_bottoms.append(image_title)
-
-        # check the occasion category listed in the top names and add it to the appropriate lists
-        for image_title in self.all_tops:
-            if 'work' in image_title:
-                self.work_tops.append(image_title)
-            if 'house party' in image_title:
-                self.house_party_tops.append(image_title)
-            if 'town' in image_title:
-                self.town_tops.append(image_title)
-            if '21st' in image_title:
-                self.twenty_first_tops.append(image_title)
-            if 'everyday' in image_title:
-                self.everyday_tops.append(image_title)
-            if 'family' in image_title:
-                self.family_tops.append(image_title)
-
-        # check the occasion category listed in the bottom names and add it to the appropriate lists
-        for image_title in self.all_bottoms:
-            if 'work' in image_title:
-                self.work_bottoms.append(image_title)
-            if 'house party' in image_title:
-                self.house_party_bottoms.append(image_title)
-            if 'town' in image_title:
-                self.town_bottoms.append(image_title)
-            if '21st' in image_title:
-                self.twenty_first_bottoms.append(image_title)
-            if 'everyday' in image_title:
-                self.everyday_bottoms.append(image_title)
-            if 'family' in image_title:
-                self.family_bottoms.append(image_title)
 
     def create_photo(self, image_name):
         # load the image in
@@ -475,12 +522,12 @@ class WardrobeApp:
     def random_outfit(self):
 
         # get a random index for the top and bottom
-        self.top_index = random.randint(0, len(self.master_tops_list) - 1)
-        self.bottom_index = random.randint(0, len(self.master_bottoms_list) - 1)
+        self.top_index = random.randint(0, len(self.mywardrobe.master_tops_list) - 1)
+        self.bottom_index = random.randint(0, len(self.mywardrobe.master_bottoms_list) - 1)
 
         # Place the random top and bottom images on the screen
-        self.update_photo(self.master_tops_list[self.top_index])
-        self.update_photo(self.master_bottoms_list[self.bottom_index])
+        self.update_photo(self.mywardrobe.master_tops_list[self.top_index])
+        self.update_photo(self.mywardrobe.master_bottoms_list[self.bottom_index])
 
         # If this is the first image then disable the prev button, otherwise make sure its normal
         if self.top_index == 0:
@@ -493,12 +540,12 @@ class WardrobeApp:
             self.button_prev_bottom.config(state='normal')
 
         # If this is the last image then disable the next button, otherwise make sure its normal
-        if self.top_index == len(self.master_tops_list) - 1:
+        if self.top_index == len(self.mywardrobe.master_tops_list) - 1:
             self.button_next_top.config(state="disabled")
         else:
             self.button_next_top.config(state="normal")
 
-        if self.bottom_index == len(self.master_bottoms_list) - 1:
+        if self.bottom_index == len(self.mywardrobe.master_bottoms_list) - 1:
             self.button_next_bottom.config(state='disabled')
         else:
             self.button_next_bottom.config(state="normal")
@@ -510,10 +557,10 @@ class WardrobeApp:
         # and get the appropriate index and image list
         if item == 'top':
             index = self.top_index
-            image_names = self.master_tops_list
-        elif item == 'bottom':
+            image_names = self.mywardrobe.master_tops_list
+        else:
             index = self.bottom_index
-            image_names = self.master_bottoms_list
+            image_names = self.mywardrobe.master_bottoms_list
 
         # Make sure you aren't at the last photo
         if index < len(image_names):
@@ -546,10 +593,10 @@ class WardrobeApp:
         # and get the appropriate index and image list
         if item == 'top':
             index = self.top_index
-            image_names = self.master_tops_list
-        elif item == 'bottom':
+            image_names = self.mywardrobe.master_tops_list
+        else:
             index = self.bottom_index
-            image_names = self.master_bottoms_list
+            image_names = self.mywardrobe.master_bottoms_list
 
         # Make sure you aren't at the first photo
         if index != 0:
@@ -608,45 +655,45 @@ class WardrobeApp:
         # type was selected
         if selection == 'weather':
             if self.weather_selection.get() == 'Show All':
-                self.weather_tops_list = self.all_tops
-                self.weather_bottoms_list = self.all_bottoms
+                self.mywardrobe.weather_tops_list = self.mywardrobe.all_tops
+                self.mywardrobe.weather_bottoms_list = self.mywardrobe.all_bottoms
             elif self.weather_selection.get() == 'Hot':
-                self.weather_tops_list = self.hot_tops
-                self.weather_bottoms_list = self.hot_bottoms
+                self.mywardrobe.weather_tops_list = self.mywardrobe.hot_tops
+                self.mywardrobe.weather_bottoms_list = self.mywardrobe.hot_bottoms
             elif self.weather_selection.get() == 'Warm':
-                self.weather_tops_list = self.warm_tops
-                self.weather_bottoms_list = self.warm_bottoms
+                self.mywardrobe.weather_tops_list = self.mywardrobe.warm_tops
+                self.mywardrobe.weather_bottoms_list = self.mywardrobe.warm_bottoms
             elif self.weather_selection.get() == 'Cold and Windy':
-                self.weather_tops_list = self.windy_tops
-                self.weather_bottoms_list = self.windy_bottoms
+                self.mywardrobe.weather_tops_list = self.mywardrobe.windy_tops
+                self.mywardrobe.weather_bottoms_list = self.mywardrobe.windy_bottoms
             elif self.weather_selection.get() == 'Cold and Rainy':
-                self.weather_tops_list = self.rainy_tops
-                self.weather_bottoms_list = self.rainy_bottoms
+                self.mywardrobe.weather_tops_list = self.mywardrobe.rainy_tops
+                self.mywardrobe.weather_bottoms_list = self.mywardrobe.rainy_bottoms
 
         # If the selection made was to filter the occasion then get the appropriate list based on what occasion
         # type was selected
         if selection == 'occasion':
             if self.occasion_selection.get() == 'Show All':
-                self.occasion_tops_list = self.all_tops
-                self.occasion_bottoms_list = self.all_bottoms
+                self.mywardrobe.occasion_tops_list = self.mywardrobe.all_tops
+                self.mywardrobe.occasion_bottoms_list = self.mywardrobe.all_bottoms
             elif self.occasion_selection.get() == 'Work':
-                self.occasion_tops_list = self.work_tops
-                self.occasion_bottoms_list = self.work_bottoms
+                self.mywardrobe.occasion_tops_list = self.mywardrobe.work_tops
+                self.mywardrobe.occasion_bottoms_list = self.mywardrobe.work_bottoms
             elif self.occasion_selection.get() == 'House Party':
-                self.occasion_tops_list = self.house_party_tops
-                self.occasion_bottoms_list = self.house_party_bottoms
+                self.mywardrobe.occasion_tops_list = self.mywardrobe.house_party_tops
+                self.mywardrobe.occasion_bottoms_list = self.mywardrobe.house_party_bottoms
             elif self.occasion_selection.get() == 'Town':
-                self.occasion_tops_list = self.town_tops
-                self.occasion_bottoms_list = self.town_bottoms
+                self.mywardrobe.occasion_tops_list = self.mywardrobe.town_tops
+                self.mywardrobe.occasion_bottoms_list = self.mywardrobe.town_bottoms
             elif self.occasion_selection.get() == '21st':
-                self.occasion_tops_list = self.twenty_first_tops
-                self.occasion_bottoms_list = self.twenty_first_bottoms
+                self.mywardrobe.occasion_tops_list = self.mywardrobe.twenty_first_tops
+                self.mywardrobe.occasion_bottoms_list = self.mywardrobe.twenty_first_bottoms
             elif self.occasion_selection.get() == 'Everyday':
-                self.occasion_tops_list = self.everyday_tops
-                self.occasion_bottoms_list = self.everyday_bottoms
+                self.mywardrobe.occasion_tops_list = self.mywardrobe.everyday_tops
+                self.mywardrobe.occasion_bottoms_list = self.mywardrobe.everyday_bottoms
             elif self.occasion_selection.get() == 'Family':
-                self.occasion_tops_list = self.family_tops
-                self.occasion_bottoms_list = self.family_bottoms
+                self.mywardrobe.occasion_tops_list = self.mywardrobe.family_tops
+                self.mywardrobe.occasion_bottoms_list = self.mywardrobe.family_bottoms
 
         # If both a weather and a occasion are selected
         # Check if specific weather and occasion filters are applied (not just show all)
@@ -656,36 +703,36 @@ class WardrobeApp:
                 (self.weather_selection.get() != '') and (self.occasion_selection.get() != ''):
             # Empty the master_tops_list and fill it only with tops common to both the weather category
             # and the occasion category selected
-            self.master_tops_list = []
-            for top in self.occasion_tops_list:
-                if top in self.weather_tops_list:
-                    self.master_tops_list.append(top)
+            self.mywardrobe.master_tops_list = []
+            for top in self.mywardrobe.occasion_tops_list:
+                if top in self.mywardrobe.weather_tops_list:
+                    self.mywardrobe.master_tops_list.append(top)
 
-            self.master_bottoms_list = []
-            for bottom in self.occasion_bottoms_list:
-                if bottom in self.weather_bottoms_list:
-                    self.master_bottoms_list.append(bottom)
+            self.mywardrobe.master_bottoms_list = []
+            for bottom in self.mywardrobe.occasion_bottoms_list:
+                if bottom in self.mywardrobe.weather_bottoms_list:
+                    self.mywardrobe.master_bottoms_list.append(bottom)
 
         # Else if only an occasion is selected then update the master list to be clothes for that occasion
         elif ((self.occasion_selection.get() != 'Show All') and (self.occasion_selection.get() != '')) and \
                 ((self.weather_selection.get() == 'Show All') or (self.weather_selection.get() == '')):
             # Update master list
-            self.master_tops_list = self.occasion_tops_list
-            self.master_bottoms_list = self.occasion_bottoms_list
+            self.mywardrobe.master_tops_list = self.mywardrobe.occasion_tops_list
+            self.mywardrobe.master_bottoms_list = self.mywardrobe.occasion_bottoms_list
 
         # Else if only a weather type is selected then update the master list to be clothes for that weather
         elif ((self.weather_selection.get() != 'Show All') and (self.weather_selection.get() != '')) and \
                 ((self.occasion_selection.get() == 'Show All') or (self.occasion_selection.get() == '')):
             # Update master list
-            self.master_tops_list = self.weather_tops_list
-            self.master_bottoms_list = self.weather_bottoms_list
+            self.mywardrobe.master_tops_list = self.mywardrobe.weather_tops_list
+            self.mywardrobe.master_bottoms_list = self.mywardrobe.weather_bottoms_list
 
         # Else if both weather and occasion are show all then master_lists = all_tops and all_bottoms
         elif ((self.weather_selection.get() == 'Show All') or (self.weather_selection.get() == '')) and \
                 ((self.occasion_selection.get() == 'Show All') or (self.occasion_selection.get() == '')):
             # Update master list
-            self.master_tops_list = self.all_tops
-            self.master_bottoms_list = self.all_bottoms
+            self.mywardrobe.master_tops_list = self.mywardrobe.all_tops
+            self.mywardrobe.master_bottoms_list = self.mywardrobe.all_bottoms
 
         # Update indices to start from the beginning
         self.top_index = 0
@@ -693,21 +740,21 @@ class WardrobeApp:
 
         # check the tops list is empty, and if it is then show an empty white frame saying "No tops"
         # Otherwise run create_photo to add the first photo to the frame
-        if len(self.master_tops_list) == 0:
+        if len(self.mywardrobe.master_tops_list) == 0:
             self.image_label = tk.Label(self.frame_top, text="No tops", bg="white", width=int(FRAME_WIDTH),
                                         height=int(FRAME_HEIGHT))
             # self.top_image_label.place_forget()
         else:
-            self.update_photo(self.master_tops_list[self.top_index])
+            self.update_photo(self.mywardrobe.master_tops_list[self.top_index])
 
         # check the bottoms list is empty, and if it is then show an empty white frame saying "No tops"
         # otherwise run create_photo to add the first photo to the frame
-        if len(self.master_bottoms_list) == 0:
+        if len(self.mywardrobe.master_bottoms_list) == 0:
             self.image_label = tk.Label(self.frame_bottom, text="No Bottoms", bg='white', width=int(FRAME_WIDTH),
                                         height=int(FRAME_HEIGHT))
             # self.bottom_image_label.place_forget()
         else:
-            self.update_photo(self.master_bottoms_list[self.bottom_index])
+            self.update_photo(self.mywardrobe.master_bottoms_list[self.bottom_index])
 
         # Make the previous buttons disabled as we are at the first image of the filtered images
         self.button_prev_top.config(state='disabled')
@@ -719,9 +766,9 @@ class WardrobeApp:
         self.button_next_bottom.config(state='normal')
 
         # If there is only 1 image (or no images) when clothes are filtered then disable the next button as well
-        if len(self.master_tops_list) <= 1:
+        if len(self.mywardrobe.master_tops_list) <= 1:
             self.button_next_top.config(state='disabled')
-        if len(self.master_bottoms_list) <= 1:
+        if len(self.mywardrobe.master_bottoms_list) <= 1:
             self.button_next_bottom.config(state='disabled')
 
     # function to load a new wardrobe into the program (change the file path)
@@ -731,21 +778,21 @@ class WardrobeApp:
         try:
             self.file_path = filedialog.askdirectory()
             # Save the new wardrobe in the "Directory (DO NOT EDIT).txt" file
-            with open('Directory (DO NOT EDIT.txt', "w") as f:
+            with open('Directory (DO NOT EDIT).txt', "w") as f:
                 f.write(self.file_path)
         # if the user doesn't choose a folder let it pass (they can still use the old one currently loaded)
         except FileNotFoundError:
             pass
         # Use the load_wardrobe function to get the new file path and new images
-        self.load_wardrobe()
+        self.mywardrobe.load_wardrobe(self.file_path)
 
         # Start the image indices at 0 (so it starts with the first image)
         self.top_index = 0
         self.bottom_index = 0
 
         # update the frames with the new photos
-        self.update_photo(self.master_tops_list[self.top_index])
-        self.update_photo(self.master_bottoms_list[self.bottom_index])
+        self.update_photo(self.mywardrobe.master_tops_list[self.top_index])
+        self.update_photo(self.mywardrobe.master_bottoms_list[self.bottom_index])
 
         # Make the previous buttons disabled as we are at the first image of the filtered images
         self.button_prev_top.config(state='disabled')
@@ -757,9 +804,9 @@ class WardrobeApp:
         self.button_next_bottom.config(state='normal')
 
         # If there is only 1 image (or no images) when clothes are filtered then disable the next button as well
-        if len(self.master_tops_list) <= 1:
+        if len(self.mywardrobe.master_tops_list) <= 1:
             self.button_next_top.config(state='disabled')
-        if len(self.master_bottoms_list) <= 1:
+        if len(self.mywardrobe.master_bottoms_list) <= 1:
             self.button_next_bottom.config(state='disabled')
 
     # function called when user right clicks a tops image
@@ -809,19 +856,12 @@ class WardrobeApp:
         cursor_x = int(self.root.winfo_pointerx() - self.root.winfo_rootx())
         cursor_y = int(self.root.winfo_pointery() - self.root.winfo_rooty())
 
-        # Create "edit_categories" menu that appears when you right click
-        self.edit_categories = tk.Canvas(self.root, width=150, height=50, highlightbackground="gray",
-                                         highlightthickness=1)
+        # Place "edit_categories" menu that appears when you right click
         self.edit_categories.place(x=cursor_x, y=cursor_y)
 
-        self.edit_image_selection = tk.StringVar()
-
-        self.R1 = tk.Radiobutton(self.edit_categories, text="Edit Weather Filters", variable=self.edit_image_selection,
-                                 value='weather', indicator=0, command=self.category_editor)
+        # Place the buttons that open the category editor onto the menu
+        # (R1 = edit weather filters R2 = edit occasion filters)
         self.R1.pack(anchor="w", fill='x')
-
-        self.R2 = tk.Radiobutton(self.edit_categories, text="Edit Occasion Filters", variable=self.edit_image_selection,
-                                 value='occasion', indicator=0, command=self.category_editor)
         self.R2.pack(anchor="w", fill='x')
 
     # Function that displays a new window to edit filters
@@ -830,7 +870,7 @@ class WardrobeApp:
         # Close the menu if you are coming from edit_image_options function
         try:
             self.edit_categories.place_forget()
-        except AttributeError: # If you are adding a new top/bottom then edit_categories doesnt exist
+        except AttributeError:  # If you are adding a new top/bottom then edit_categories doesnt exist
             pass
 
         # Open a new canvas that shows all the categories and asks which one you want to add
@@ -840,7 +880,7 @@ class WardrobeApp:
         # depending on what the selected to edit
         try:
             selection = self.edit_image_selection.get()
-        except AttributeError: # If you are adding a new top/bottom then edit_image_selection doesnt exist
+        except AttributeError:  # If you are adding a new top/bottom then edit_image_selection doesnt exist
             self.editor.title("Edit Categories")
         else:
             if self.edit_image_selection.get() == 'occasion':
@@ -887,7 +927,7 @@ class WardrobeApp:
         # If you are editing filters then only display the one you're editing (weather or occasion)
         try:
             selection = self.edit_image_selection.get()
-        except AttributeError: # If you are adding a new top/bottom then edit_image_selection doesnt exist
+        except AttributeError:  # If you are adding a new top/bottom then edit_image_selection doesnt exist
             self.frame_options_edit_weather = tk.Frame(self.editor)
             self.frame_options_edit_weather.place(relx=0.5, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
 
@@ -1027,10 +1067,12 @@ class WardrobeApp:
                 self.twenty_first_filter.pack(anchor='w')
 
                 self.everyday_filter = tk.Checkbutton(self.frame_options_edit, text="Everyday",
-                                                      variable=self.everyday_selection, command=self.change_everyday_filter)
+                                                      variable=self.everyday_selection,
+                                                      command=self.change_everyday_filter)
                 self.everyday_filter.pack(anchor='w')
 
-                self.family_filter = tk.Checkbutton(self.frame_options_edit, text="Family", variable=self.family_selection,
+                self.family_filter = tk.Checkbutton(self.frame_options_edit, text="Family",
+                                                    variable=self.family_selection,
                                                     command=self.change_family_filter)
                 self.family_filter.pack(anchor='w')
 
@@ -1054,8 +1096,7 @@ class WardrobeApp:
 
         # Show the Edit Weather Categories window
         self.editor.mainloop()
-        print(self.edit_image_selection.get())
-
+        #print(self.edit_image_selection.get())
 
     # Function called when save button is pressed that closes the editor (new_item_category_editor and category
     # editor functions)
@@ -1156,9 +1197,9 @@ class WardrobeApp:
     def add_filter(self, added):
         # Get the image name
         if self.image_type == 'top':
-            image_title = self.master_tops_list[self.top_index]
-        elif self.image_type == 'bottom':
-            image_title = self.master_bottoms_list[self.bottom_index]
+            image_title = self.mywardrobe.master_tops_list[self.top_index]
+        else:
+            image_title = self.mywardrobe.master_bottoms_list[self.bottom_index]
 
         # Split the name into before the .jpg (or other extension) and the extension (this will exclude the '.')
         name_list = image_title.split(".")
@@ -1172,15 +1213,15 @@ class WardrobeApp:
         os.rename((self.file_path + "\\" + image_title), (self.file_path + "\\" + new_title))
 
         # reload the clothes
-        self.load_wardrobe()
+        self.mywardrobe.load_wardrobe()
 
     # Function used to remove a filter from a clothing image (called by change_..._filter functions above)
     def remove_filter(self, removed):
         # Get the image name
         if self.image_type == 'top':
-            image_title = self.master_tops_list[self.top_index]
-        elif self.image_type == 'bottom':
-            image_title = self.master_bottoms_list[self.bottom_index]
+            image_title = self.mywardrobe.master_tops_list[self.top_index]
+        else:
+            image_title = self.mywardrobe.master_bottoms_list[self.bottom_index]
 
         # Create a list with 2 elements - the first is everything before the word top, the second is everything after
         new_name_list = image_title.split(removed)
@@ -1200,7 +1241,7 @@ class WardrobeApp:
         os.rename((self.file_path + "\\" + image_title), (self.file_path + "\\" + new_name))
 
         # reload the clothes
-        self.load_wardrobe()
+        self.mywardrobe.load_wardrobe()
 
     # Function called to add a new top to the wardrobe from within the app
     def new_top(self):
@@ -1228,7 +1269,7 @@ class WardrobeApp:
             index = item_path.rfind("/")
             directory = item_path[0:index + 1]  # including the /
             original_name = item_path[index + 1:]  # including the extension
-            print(directory)
+            #print(directory)
 
             # Get the extension
             name_list = item_path.split(".")
@@ -1236,45 +1277,45 @@ class WardrobeApp:
 
             # Name the top to the topx where x is the total number of tops in the wardrobe including the addition
             if self.image_type == "top":
-                new_name = "top" + str(len(self.all_tops) + 1) + "." + extension
+                new_name = "top" + str(len(self.mywardrobe.all_tops) + 1) + "." + extension
             elif self.image_type == "bottom":
-                new_name = "bottom" + str(len(self.all_bottoms) + 1) + "." + extension
-            print(new_name)
+                new_name = "bottom" + str(len(self.mywardrobe.all_bottoms) + 1) + "." + extension
+            #print(new_name)
 
             # Make a copy and move the file into the current wardrobe and rename it
             shutil.copyfile(item_path, (self.file_path + "\\" + new_name))
 
             # Load the image into the wardrobe
-            self.load_wardrobe()
+            self.mywardrobe.load_wardrobe()
 
             # Show the photo as the current selection
             if self.image_type == "top":
-                self.top_index = len(self.all_tops) - 1
-                self.update_photo(self.all_tops[self.top_index])
+                self.top_index = len(self.mywardrobe.all_tops) - 1
+                self.update_photo(self.mywardrobe.all_tops[self.top_index])
 
                 # Disable the next button because this is the last photo
                 self.button_next_top.config(state='disabled')
 
                 # Enable the previous button if the list is greater than 1
-                if len(self.all_tops) > 1:
+                if len(self.mywardrobe.all_tops) > 1:
                     self.button_prev_top.config(state='normal')
 
             elif self.image_type == "bottom":
-                self.bottom_index = len(self.all_bottoms) - 1
-                self.update_photo(self.all_bottoms[self.bottom_index])
+                self.bottom_index = len(self.mywardrobe.all_bottoms) - 1
+                self.update_photo(self.mywardrobe.all_bottoms[self.bottom_index])
 
                 # Disable the next button because this is the last photo
                 self.button_next_bottom.config(state='disabled')
 
                 # Enable the previous button if the list is greater than 1
-                if len(self.all_bottoms) > 1:
+                if len(self.mywardrobe.all_bottoms) > 1:
                     self.button_prev_bottom.config(state='normal')
 
             # Show the edit weather categories options to add weather categories
             self.category_editor()
 
             # load the wardrobe again
-            self.load_wardrobe()
+            self.mywardrobe.load_wardrobe()
 
             # Show the edit occasion categories options to add occasion categories
             # self.R2.select()
