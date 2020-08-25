@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import filedialog
 from PIL import Image, ImageTk
 import random
-from playsound import playsound
+'''from playsound import playsound'''
 
 '''
 This is a program that chooses my outfits for me
