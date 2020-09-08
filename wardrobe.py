@@ -918,9 +918,9 @@ class WardrobeApp:
 
         # Get the image name
         if self.image_type == 'top':
-            image_name = self.mywardrobemaster_tops_list[self.top_index]
+            image_name = self.mywardrobe.master_tops_list[self.top_index]
         elif self.image_type == 'bottom':
-            image_name = self.mywardrobemaster_bottoms_list[self.bottom_index]
+            image_name = self.mywardrobe.master_bottoms_list[self.bottom_index]
 
         # Show the filters
         # If you are adding a new top/bottom then display all the filters (in the except clause)
