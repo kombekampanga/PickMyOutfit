@@ -72,9 +72,11 @@ class WardrobeApp:
         def __init__(self):
 
             # Create list of weather categories
-            self.weather_categories = ['Show All', 'Hot', 'Warm', 'Cold and Windy', 'Cold and Rainy']
+            self.weather_categories = [
+                'Show All', 'Hot', 'Warm', 'Cold and Windy', 'Cold and Rainy']
             # Create list of occasion categories
-            self.occasion_categories = ['Show All', 'Work', 'House Party', 'Town', '21st', 'Everyday', 'Family']
+            self.occasion_categories = [
+                'Show All', 'Work', 'House Party', 'Town', '21st', 'Everyday', 'Family']
 
             # Create lists containing images for different categories
             self.all_clothes = []
@@ -259,7 +261,8 @@ class WardrobeApp:
         self.root = root
 
         # create a canvas to specify the size of the window
-        self.canvas = tk.Canvas(self.root, height=WINDOW_HEIGHT, width=WINDOW_WIDTH)
+        self.canvas = tk.Canvas(
+            self.root, height=WINDOW_HEIGHT, width=WINDOW_WIDTH)
 
         # Create a frame to display the tops
         self.frame_top = tk.Frame(self.root, bg='#80c1ff')
@@ -271,12 +274,16 @@ class WardrobeApp:
         self.file_path = ''
 
         # buttons to cycle through tops (previous and next)
-        self.button_prev_top = tk.Button(self.root, text="Prev", bg='pink', command=self.top_prev_photo)
-        self.button_next_top = tk.Button(self.root, text="Next", bg='pink', command=self.top_next_photo)
+        self.button_prev_top = tk.Button(
+            self.root, text="Prev", bg='pink', command=self.top_prev_photo)
+        self.button_next_top = tk.Button(
+            self.root, text="Next", bg='pink', command=self.top_next_photo)
 
         # buttons to cycle through bottoms (previous and next)
-        self.button_prev_bottom = tk.Button(self.root, text="Prev", bg="#BDA0CB", command=self.bottom_prev_photo)
-        self.button_next_bottom = tk.Button(self.root, text="Next", bg='#BDA0CB', command=self.bottom_next_photo)
+        self.button_prev_bottom = tk.Button(
+            self.root, text="Prev", bg="#BDA0CB", command=self.bottom_prev_photo)
+        self.button_next_bottom = tk.Button(
+            self.root, text="Next", bg='#BDA0CB', command=self.bottom_next_photo)
 
         # Random outfit button
         self.button_random_outfit = tk.Button(self.root, text="Random Outfit", bg='light green',
@@ -286,12 +293,14 @@ class WardrobeApp:
         self.label_top = tk.Label(self.frame_top, text="Tops", bg='white')
 
         # Create label for the bottoms area
-        self.label_bottom = tk.Label(self.frame_bottom, text="Bottoms", bg='white')
+        self.label_bottom = tk.Label(
+            self.frame_bottom, text="Bottoms", bg='white')
 
         # Create a drop down menu to select the weather:
         # ------------------------------------------------------------------
         # Create a main weather menu button that displays weather options when clicked
-        self.weather_menubutton = tk.Menubutton(self.root, text="Weather", bg='light blue')
+        self.weather_menubutton = tk.Menubutton(
+            self.root, text="Weather", bg='light blue')
         # Create a menu to list all the weather options (tear off = 0 removes a weird line at the top)
         # and attach it to the weather menu button
         self.weather_menu = tk.Menu(self.weather_menubutton, tearoff=0)
@@ -299,7 +308,8 @@ class WardrobeApp:
         # Create an drop down menu to select the occasion:
         # -------------------------------------------------------------------
         # Create a main occasion menu button that displays weather options when clicked
-        self.occasion_menubutton = tk.Menubutton(self.root, text="Occasion", bg='light yellow')
+        self.occasion_menubutton = tk.Menubutton(
+            self.root, text="Occasion", bg='light yellow')
         # Create a menu to list all the occasion options (tear off = 0 removes a weird line at the top)
         # and attach it to the occasion menu button
         self.occasion_menu = tk.Menu(self.occasion_menubutton, tearoff=0)
@@ -378,7 +388,8 @@ class WardrobeApp:
         # Upload the initial top and the bottom picture into the frame (indices initially = 0)
         if self.file_path != '':
             self.create_photo(self.mywardrobe.master_tops_list[self.top_index])
-            self.create_photo(self.mywardrobe.master_bottoms_list[self.bottom_index])
+            self.create_photo(
+                self.mywardrobe.master_bottoms_list[self.bottom_index])
 
         # Create the details for the window
         self.create_frame()
@@ -390,7 +401,8 @@ class WardrobeApp:
         # self.edit_categories.menu = tk.Canvas()
         # When you right click the image you are able to edit the categories
         self.top_image_label.bind("<Button-3>", self.right_clicked_image_top)
-        self.bottom_image_label.bind("<Button-3>", self.right_clicked_image_bottom)
+        self.bottom_image_label.bind(
+            "<Button-3>", self.right_clicked_image_bottom)
         # when you left click out of the image then get off the edit categories option
         self.canvas.bind("<Button-1>", self.left_clicked)
         self.canvas.bind("<Button-1>", self.left_clicked)
@@ -404,10 +416,12 @@ class WardrobeApp:
         self.canvas.pack()
 
         # Place the frame for the tops
-        self.frame_top.place(relx=PERCENTAGE_EITHER_SIDE_OF_FRAME, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
+        self.frame_top.place(relx=PERCENTAGE_EITHER_SIDE_OF_FRAME,
+                             rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
 
         # Place the frame for the bottoms
-        self.frame_bottom.place(relx=PERCENTAGE_EITHER_SIDE_OF_FRAME, rely=0.5, width=FRAME_WIDTH, height=FRAME_HEIGHT)
+        self.frame_bottom.place(relx=PERCENTAGE_EITHER_SIDE_OF_FRAME,
+                                rely=0.5, width=FRAME_WIDTH, height=FRAME_HEIGHT)
 
     # Function to create a previous and next buttons for each item and add them to the root
     def create_buttons(self):
@@ -415,16 +429,20 @@ class WardrobeApp:
         # Place the previous and next buttons for the tops in the frame to cycle through tops
         # Previous button should start off being disabled since the very first image is shown at the start
         self.button_prev_top.config(state='disabled')
-        self.button_prev_top.place(relx=0.25, rely=0.25, relwidth=0.08, relheight=0.05)
+        self.button_prev_top.place(
+            relx=0.25, rely=0.25, relwidth=0.08, relheight=0.05)
 
-        self.button_next_top.place(relx=0.67, rely=0.25, relwidth=0.08, relheight=0.05)
+        self.button_next_top.place(
+            relx=0.67, rely=0.25, relwidth=0.08, relheight=0.05)
 
         # Place the previous and next buttons for the bottoms in the frame to cycle through bottoms
         # Previous button should start off being disabled since the very first image is shown at the start
         self.button_prev_bottom.config(state='disabled')
-        self.button_prev_bottom.place(relx=0.25, rely=0.65, relwidth=0.08, relheight=0.05)
+        self.button_prev_bottom.place(
+            relx=0.25, rely=0.65, relwidth=0.08, relheight=0.05)
 
-        self.button_next_bottom.place(relx=0.67, rely=0.65, relwidth=0.08, relheight=0.05)
+        self.button_next_bottom.place(
+            relx=0.67, rely=0.65, relwidth=0.08, relheight=0.05)
 
         # Place the random outfit button in the frame
         self.button_random_outfit.place(relx=0.05, rely=0.05)
@@ -434,7 +452,8 @@ class WardrobeApp:
         self.label_top.place(relx=0.3, rely=0.02, relwidth=0.4, height=0.1)
 
         # Place label for bottoms area
-        self.label_bottom.place(relx=0.3, rely=0.02, relwidth=0.4, relheight=0.1)
+        self.label_bottom.place(relx=0.3, rely=0.02,
+                                relwidth=0.4, relheight=0.1)
 
     def create_menu_buttons(self):
 
@@ -463,7 +482,8 @@ class WardrobeApp:
         # Attach file to the menu bar
         self.menubar.add_cascade(label="File", menu=self.file)
         # Add the "Load Wardrobe" option
-        self.file.add_command(label="Load Wardrobe", command=self.load_new_wardrobe)
+        self.file.add_command(label="Load Wardrobe",
+                              command=self.load_new_wardrobe)
         # Add the "Exit" option
         self.file.add_command(label="Exit", command=self.root.destroy)
 
@@ -481,7 +501,8 @@ class WardrobeApp:
         # load the image in
         load = Image.open(self.file_path + "\\" + image_name)
         # Resize the image so it fits in the frame
-        image_resized = load.resize((int(FRAME_WIDTH), int(FRAME_HEIGHT)), Image.ANTIALIAS)
+        image_resized = load.resize(
+            (int(FRAME_WIDTH), int(FRAME_HEIGHT)), Image.ANTIALIAS)
         # Create the image so tkinter can read it
         photo = ImageTk.PhotoImage(image_resized)
 
@@ -522,12 +543,15 @@ class WardrobeApp:
     def random_outfit(self):
 
         # get a random index for the top and bottom
-        self.top_index = random.randint(0, len(self.mywardrobe.master_tops_list) - 1)
-        self.bottom_index = random.randint(0, len(self.mywardrobe.master_bottoms_list) - 1)
+        self.top_index = random.randint(
+            0, len(self.mywardrobe.master_tops_list) - 1)
+        self.bottom_index = random.randint(
+            0, len(self.mywardrobe.master_bottoms_list) - 1)
 
         # Place the random top and bottom images on the screen
         self.update_photo(self.mywardrobe.master_tops_list[self.top_index])
-        self.update_photo(self.mywardrobe.master_bottoms_list[self.bottom_index])
+        self.update_photo(
+            self.mywardrobe.master_bottoms_list[self.bottom_index])
 
         # If this is the first image then disable the prev button, otherwise make sure its normal
         if self.top_index == 0:
@@ -628,7 +652,8 @@ class WardrobeApp:
         # load the image in
         load = Image.open(self.file_path + "\\" + image_name)
         # Resize the image so it fits in the frame
-        image_resized = load.resize((int(FRAME_WIDTH), int(FRAME_HEIGHT)), Image.ANTIALIAS)
+        image_resized = load.resize(
+            (int(FRAME_WIDTH), int(FRAME_HEIGHT)), Image.ANTIALIAS)
         # Create the image so tkinter can read it
         photo = ImageTk.PhotoImage(image_resized)
 
@@ -754,7 +779,8 @@ class WardrobeApp:
                                         height=int(FRAME_HEIGHT))
             # self.bottom_image_label.place_forget()
         else:
-            self.update_photo(self.mywardrobe.master_bottoms_list[self.bottom_index])
+            self.update_photo(
+                self.mywardrobe.master_bottoms_list[self.bottom_index])
 
         # Make the previous buttons disabled as we are at the first image of the filtered images
         self.button_prev_top.config(state='disabled')
@@ -792,7 +818,8 @@ class WardrobeApp:
 
         # update the frames with the new photos
         self.update_photo(self.mywardrobe.master_tops_list[self.top_index])
-        self.update_photo(self.mywardrobe.master_bottoms_list[self.bottom_index])
+        self.update_photo(
+            self.mywardrobe.master_bottoms_list[self.bottom_index])
 
         # Make the previous buttons disabled as we are at the first image of the filtered images
         self.button_prev_top.config(state='disabled')
@@ -818,6 +845,7 @@ class WardrobeApp:
         # Call the edit image function and tell it that you are editing a top item
         # Make sure it doesn't keep creating menus when you right click
         # If the menu already exists, then forget it an make a new one
+        self.R1.deselect()
         try:
             print("working")
             self.edit_categories.place_forget()
@@ -834,6 +862,7 @@ class WardrobeApp:
         # Call the edit image function and tell it that you are editing a bottom item
         # Make sure it doesn't keep creating menus when you right click
         # If the menu already exists, then forget it an make a new one
+        self.R1.deselect()
         try:
             print("working")
             self.edit_categories.place_forget()
@@ -895,12 +924,14 @@ class WardrobeApp:
         # Show the image of the selected top
         # Set the frame
         self.frame_image_edit = tk.Frame(self.editor, bg='#80c1ff')
-        self.frame_image_edit.place(relx=0.1, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
+        self.frame_image_edit.place(
+            relx=0.1, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
 
         if self.image_type == 'top':
             # Put the top image inside the frame (remember the image photo is saved in the original
             # top_image_label.image
-            self.image_label = tk.Label(self.frame_image_edit, image=self.top_image_label.image)
+            self.image_label = tk.Label(
+                self.frame_image_edit, image=self.top_image_label.image)
             # Save a reference so that tkinter doesnt doesn't send it to the garbage collector
             # when the function closes (so the widget can still hold onto the image)
             self.image_label.image = self.top_image_label.image
@@ -908,7 +939,8 @@ class WardrobeApp:
         elif self.image_type == 'bottom':
             # Put the bottom image inside the frame (remember the image photo is saved in the original
             # bottom_image_label.image
-            self.image_label = tk.Label(self.frame_image_edit, image=self.bottom_image_label.image)
+            self.image_label = tk.Label(
+                self.frame_image_edit, image=self.bottom_image_label.image)
             # Save a reference so that tkinter doesnt doesn't send it to the garbage collector
             # when the function closes (so the widget can still hold onto the image)
             self.image_label.image = self.bottom_image_label.image
@@ -929,10 +961,12 @@ class WardrobeApp:
             selection = self.edit_image_selection.get()
         except AttributeError:  # If you are adding a new top/bottom then edit_image_selection doesnt exist
             self.frame_options_edit_weather = tk.Frame(self.editor)
-            self.frame_options_edit_weather.place(relx=0.5, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
+            self.frame_options_edit_weather.place(
+                relx=0.5, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
 
             self.frame_options_edit_occasion = tk.Frame(self.editor)
-            self.frame_options_edit_occasion.place(relx=0.7, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
+            self.frame_options_edit_occasion.place(
+                relx=0.7, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
 
             # Weather filters
             self.hot_selection = tk.IntVar()
@@ -1006,7 +1040,8 @@ class WardrobeApp:
 
         else:
             self.frame_options_edit = tk.Frame(self.editor)
-            self.frame_options_edit.place(relx=0.5, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
+            self.frame_options_edit.place(
+                relx=0.5, rely=0.1, width=FRAME_WIDTH, height=FRAME_HEIGHT)
 
             if self.edit_image_selection.get() == 'weather':
                 self.hot_selection = tk.IntVar()
@@ -1091,15 +1126,18 @@ class WardrobeApp:
                     self.family_filter.select()
 
         # Add a save button
-        self.save_button = tk.Button(self.editor, text="Save", bg='light blue', command=self.close_editor)
-        self.save_button.place(relx=0.7, rely=0.8, relwidth=0.1, relheight=0.075)
+        self.save_button = tk.Button(
+            self.editor, text="Save", bg='light blue', command=self.close_editor)
+        self.save_button.place(
+            relx=0.7, rely=0.8, relwidth=0.1, relheight=0.075)
 
         # Show the Edit Weather Categories window
         self.editor.mainloop()
-        #print(self.edit_image_selection.get())
+        # print(self.edit_image_selection.get())
 
     # Function called when save button is pressed that closes the editor (new_item_category_editor and category
     # editor functions)
+
     def close_editor(self):
         self.editor.destroy()
 
@@ -1210,10 +1248,11 @@ class WardrobeApp:
         new_title = before_extension + ", " + added + "." + extension
 
         # Save the new name
-        os.rename((self.file_path + "\\" + image_title), (self.file_path + "\\" + new_title))
+        os.rename((self.file_path + "\\" + image_title),
+                  (self.file_path + "\\" + new_title))
 
         # reload the clothes
-        self.mywardrobe.load_wardrobe()
+        self.mywardrobe.load_wardrobe(self.file_path)
 
     # Function used to remove a filter from a clothing image (called by change_..._filter functions above)
     def remove_filter(self, removed):
@@ -1238,10 +1277,11 @@ class WardrobeApp:
         new_name = new_name_pt1 + new_name_pt2
 
         # Save the new name
-        os.rename((self.file_path + "\\" + image_title), (self.file_path + "\\" + new_name))
+        os.rename((self.file_path + "\\" + image_title),
+                  (self.file_path + "\\" + new_name))
 
         # reload the clothes
-        self.mywardrobe.load_wardrobe()
+        self.mywardrobe.load_wardrobe(self.file_path)
 
     # Function called to add a new top to the wardrobe from within the app
     def new_top(self):
@@ -1269,7 +1309,7 @@ class WardrobeApp:
             index = item_path.rfind("/")
             directory = item_path[0:index + 1]  # including the /
             original_name = item_path[index + 1:]  # including the extension
-            #print(directory)
+            # print(directory)
 
             # Get the extension
             name_list = item_path.split(".")
@@ -1277,10 +1317,12 @@ class WardrobeApp:
 
             # Name the top to the topx where x is the total number of tops in the wardrobe including the addition
             if self.image_type == "top":
-                new_name = "top" + str(len(self.mywardrobe.all_tops) + 1) + "." + extension
+                new_name = "top" + \
+                    str(len(self.mywardrobe.all_tops) + 1) + "." + extension
             elif self.image_type == "bottom":
-                new_name = "bottom" + str(len(self.mywardrobe.all_bottoms) + 1) + "." + extension
-            #print(new_name)
+                new_name = "bottom" + \
+                    str(len(self.mywardrobe.all_bottoms) + 1) + "." + extension
+            # print(new_name)
 
             # Make a copy and move the file into the current wardrobe and rename it
             shutil.copyfile(item_path, (self.file_path + "\\" + new_name))
@@ -1302,7 +1344,8 @@ class WardrobeApp:
 
             elif self.image_type == "bottom":
                 self.bottom_index = len(self.mywardrobe.all_bottoms) - 1
-                self.update_photo(self.mywardrobe.all_bottoms[self.bottom_index])
+                self.update_photo(
+                    self.mywardrobe.all_bottoms[self.bottom_index])
 
                 # Disable the next button because this is the last photo
                 self.button_next_bottom.config(state='disabled')
